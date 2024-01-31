@@ -6,5 +6,19 @@ export default {
   theme: {
     extend: {},
   },
-  plugins: [require("daisyui")],
+  plugins: [
+    require("daisyui"),
+    function ({ addUtilities }) {
+      const newUtilities = {
+        ".before": {
+          content: '""',
+        },
+        ".after": {
+          content: '""',
+        },
+      };
+
+      addUtilities(newUtilities, ["before", "after"]);
+    },
+  ],
 };
