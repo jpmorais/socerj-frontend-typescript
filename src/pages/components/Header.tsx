@@ -15,7 +15,13 @@ const Header: React.FC<HeaderProps> = ({
   setClosedSidebar,
 }) => {
   const changeTheme = () => {
-    theme === "dark" ? setTheme("light") : setTheme("dark");
+    if (theme === "dark") {
+      setTheme("light");
+      localStorage.setItem("theme", "light");
+    } else {
+      setTheme("dark");
+      localStorage.setItem("theme", "dark");
+    }
   };
 
   return (
