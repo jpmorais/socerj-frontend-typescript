@@ -7,17 +7,20 @@ import Pagination from "../../components/Pagination.tsx";
 import AreasCreate from "./AreasCreate.tsx";
 import { FilePenLine, Trash2 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
+import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 
 const AreasLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
+  const [limit, setLimit] = useState<number>(10);
+
   const [fetchAgain, setFetchAgain] = useState<boolean>(false);
 
   const { isLoading, setIsLoading } = useDashboardContext();
 
   const { isPending, error, data, refetch } = Areas.getAllAreas({
     filter: `area:${search}`,
-    limit: 10,
+    limit: limit,
     page: page,
   });
 
@@ -30,7 +33,7 @@ const AreasLista: React.FC = () => {
   };
 
   useEffect(() => {
-    refetch();
+    fetchAgain && refetch();
     setFetchAgain(false);
   }, [fetchAgain]);
 
@@ -91,13 +94,14 @@ const AreasLista: React.FC = () => {
               </tbody>
             </table>
           </div>
-          <div className="flex flex-row mt-6 mb-12">
+          <div className="flex flex-row mt-6 mb-12 justify-between mr-24">
             <Pagination
               clickPrevious={() => setPage(page - 1)}
               clickNext={() => setPage(page + 1)}
               page={page}
               totalPages={data?.totalPages || 0}
             />
+            <SelectPageLimit limit={limit} setLimit={setLimit} />
           </div>
         </div>
       </div>

@@ -1,29 +1,31 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import Areas, { AreaPayload } from "../../models/Areas";
+import Areas, { IAreaPayload } from "../../models/Areas";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useRef } from "react";
+import toast from "react-hot-toast";
 
 const AreasCreate: React.FC = () => {
   const navigate = useNavigate();
 
-  const inputRef = useRef<HTMLInputElement>(null);
-
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<AreaPayload>();
+  } = useForm<IAreaPayload>();
 
-  const { mutate, isPending, isSuccess } = Areas.createArea({
+  const { mutate, isPending } = Areas.createArea({
     onSuccess: () => {
+      toast.success("área criada com sucesso");
+      reset();
       navigate(".");
-      if (inputRef.current) {
-        inputRef.current.value = "";
-      }
+    },
+    onError: (error: any) => {
+      toast.error(`falha ao criar área: ${error?.response?.data?.message}`);
+      reset();
     },
   });
 
-  const onSubmit: SubmitHandler<AreaPayload> = async (data) => {
+  const onSubmit: SubmitHandler<IAreaPayload> = async (data) => {
     mutate(data);
   };
 
@@ -36,13 +38,16 @@ const AreasCreate: React.FC = () => {
           })}
           className="input input-bordered w-[300px]"
           placeholder="Área"
-          ref={inputRef}
         />
         <div className="text-error">
           {errors.area && <p>{errors.area.message}</p>}
         </div>
       </div>
-      <button type="submit" className="btn btn-primary font-semibold text-lg">
+      <button
+        disabled={isPending}
+        type="submit"
+        className="btn btn-primary font-semibold text-lg"
+      >
         {isPending ? "Cadastrando..." : "Cadastrar"}
       </button>
     </form>

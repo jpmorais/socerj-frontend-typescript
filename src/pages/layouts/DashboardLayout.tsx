@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 import Header from "../components/Header";
 import Lottie from "lottie-react";
 import animationLoading from "../../assets/loading.json";
+import Sidebar from "../../components/Sidebar";
 
 interface DashboardLayoutProps {}
 
@@ -43,7 +44,7 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = () => {
               closedSidebar && "ml-[-200px]"
             }`}
           >
-            Sidebar
+            <Sidebar closed={closedSidebar} />
           </div>
           <section className="w-full">
             <DashboardContext.Provider value={{ isLoading, setIsLoading }}>

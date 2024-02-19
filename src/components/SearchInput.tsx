@@ -19,7 +19,7 @@ const SearchInput = ({ setSearch }: Props) => {
     <label className="input input-bordered flex items-center gap-2 w-[400px]">
       <input
         type="text"
-        className="grow"
+        className="grow bg-base-100"
         placeholder="Search"
         ref={refSearch}
         onKeyDown={handleSearch}

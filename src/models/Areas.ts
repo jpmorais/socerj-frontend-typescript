@@ -1,4 +1,3 @@
-// AreasModel.ts
 import axios from "axios";
 import {
   IGetAllApiResponse,
@@ -7,23 +6,23 @@ import {
 } from "../types/types";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-export interface Area {
+export interface IArea {
   id: number;
   area: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface AreaPayload extends Omit<Area, "id"> {}
+export interface IAreaPayload extends Omit<IArea, "id"> {}
 
 class Areas {
   static getAllAreas(params?: IGetAllRequestParams) {
     const fetchaData = async () => {
-      const response = await axios.get<IGetAllApiResponse<Area>>(
+      const response = await axios.get<IGetAllApiResponse<IArea>>(
         `/api/v1/areas?filter=${params?.filter || ""}&sort=${
           params?.sort || ""
         }&limit=${params?.limit || 20}&page=${params?.page || 1}`
-      ); // Substitua pelo seu endpoint real
+      );
       return {
         items: response.data.items,
         totalPages: response.data.totalPages,
@@ -31,15 +30,14 @@ class Areas {
     };
 
     return useQuery({
-      queryKey: ["areas", params?.filter, params?.page],
+      queryKey: ["areas", params?.filter, params?.page, params?.limit],
       queryFn: fetchaData,
     });
   }
 
   static getArea(id: string) {
     const fetchaData = async () => {
-      console.log(`Fetching uma vez...`);
-      const response = await axios.get<Area>(`/api/v1/areas/${id}`);
+      const response = await axios.get<IArea>(`/api/v1/areas/${id}`);
       return response.data;
     };
 
@@ -50,7 +48,7 @@ class Areas {
   }
 
   static createArea({ onSuccess, onError }: IMutateObject) {
-    const postData = async (data: AreaPayload) => {
+    const postData = async (data: IAreaPayload) => {
       const response = await axios.post(`/api/v1/areas`, data);
       return response.data;
     };
@@ -63,10 +61,9 @@ class Areas {
   }
 
   static updateArea({ onSuccess, onError }: IMutateObject) {
-    const patchData = async (data: Area) => {
-      const response = await axios.patch(`/api/v1/areas/${data.id}`, {
-        area: data.area,
-      });
+    const patchData = async (data: IArea) => {
+      const { id, ...payload } = data;
+      const response = await axios.patch(`/api/v1/areas/${data.id}`, payload);
       return response.data;
     };
 

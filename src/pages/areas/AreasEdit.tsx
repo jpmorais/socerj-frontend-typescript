@@ -1,8 +1,10 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Areas, { AreaPayload } from "../../models/Areas";
+import Areas, { IAreaPayload } from "../../models/Areas";
 import { useEffect, useRef } from "react";
 import Modal from "../../components/Modal";
+import toast from "react-hot-toast";
+import { useDashboardContext } from "../layouts/DashboardLayout";
 
 type OutletContextType = {
   setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +15,7 @@ const AreasEdit = () => {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const { setFetchAgain } = useOutletContext<OutletContextType>();
+  const { isLoading, setIsLoading } = useDashboardContext();
 
   const onClickClose = () => {
     navigate("..");
@@ -21,6 +24,17 @@ const AreasEdit = () => {
   // Get area
   const { id } = useParams();
   const { isPending: isPendingGet, error, data, refetch } = Areas.getArea(id!);
+  useEffect(() => {
+    if (isPendingGet) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+
+    if (error) {
+      throw new Error("Falha ao buscar áreas");
+    }
+  }, [isPendingGet]);
 
   useEffect(() => {
     refetch();
@@ -31,11 +45,16 @@ const AreasEdit = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<AreaPayload>();
+  } = useForm<IAreaPayload>();
 
   const { mutate, isPending: isPendingPatch } = Areas.updateArea({
     onSuccess: () => {
       setFetchAgain(true);
+      toast.success("área editada com sucesso");
+      navigate("..");
+    },
+    onError: (error: any) => {
+      toast.error(`falha ao editar área: ${error?.response?.data?.message}`);
       navigate("..");
     },
   });
@@ -44,7 +63,7 @@ const AreasEdit = () => {
     refetch();
   });
 
-  const onSubmit: SubmitHandler<AreaPayload> = async (data) => {
+  const onSubmit: SubmitHandler<IAreaPayload> = async (data) => {
     mutate({
       id: parseInt(id!),
       area: data.area,
@@ -75,6 +94,7 @@ const AreasEdit = () => {
             {errors.area && <p>{errors.area.message}</p>}
           </div>
           <button
+            disabled={isPendingPatch}
             type="submit"
             className="btn btn-primary font-semibold text-lg"
           >

@@ -1,8 +1,9 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
-import Areas, { AreaPayload } from "../../models/Areas";
-import { useEffect, useRef } from "react";
+import Areas from "../../models/Areas";
 import Modal from "../../components/Modal";
+import { useEffect } from "react";
+import { useDashboardContext } from "../layouts/DashboardLayout";
+import toast from "react-hot-toast";
 
 type OutletContextType = {
   setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
@@ -12,6 +13,7 @@ type OutletContextType = {
 const AreasDelete = () => {
   const navigate = useNavigate();
   const { setFetchAgain } = useOutletContext<OutletContextType>();
+  const { isLoading, setIsLoading } = useDashboardContext();
 
   const onClickClose = () => {
     navigate("..");
@@ -20,11 +22,27 @@ const AreasDelete = () => {
   // Get area
   const { id } = useParams();
   const { isPending: isPendingGet, error, data } = Areas.getArea(id!);
+  useEffect(() => {
+    if (isPendingGet) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+
+    if (error) {
+      throw new Error("Falha ao buscar áreas");
+    }
+  }, [isPendingGet]);
 
   // Delete area
   const { mutate, isPending: isPendingPatch } = Areas.deleteArea({
     onSuccess: () => {
       setFetchAgain(true);
+      toast.success("área excluída com sucesso");
+      navigate("..");
+    },
+    onError: (error: any) => {
+      toast.error(`falha ao editar área: ${error?.response?.data?.message}`);
       navigate("..");
     },
   });
@@ -47,7 +65,11 @@ const AreasDelete = () => {
           Excluir #{data?.id} | {data?.area}
         </h3>
         <div className="flex flex-col gap-3">
-          <button type="submit" className="btn btn-error font-semibold text-lg">
+          <button
+            type="submit"
+            disabled={isPendingPatch}
+            className="btn btn-error font-semibold text-lg"
+          >
             {isPendingPatch ? "Excluindo..." : "Excluir"}
           </button>
         </div>

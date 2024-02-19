@@ -4,6 +4,7 @@ import DashboardLayout from "./pages/layouts/DashboardLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AreasEdit from "./pages/areas/AreasEdit";
 import AreasDelete from "./pages/areas/AreasDelete";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,7 @@ const queryClient = new QueryClient({
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
