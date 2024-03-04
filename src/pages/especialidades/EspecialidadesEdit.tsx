@@ -1,13 +1,15 @@
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import Areas, { IAreaPayload } from "../../models/Areas";
 import { useEffect, useRef } from "react";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
 import { useDashboardContext } from "../layouts/DashboardLayout";
+import Especialidades, {
+  IEspecialidadePayload,
+} from "../../models/Especialidades";
 import { useQueryClient } from "@tanstack/react-query";
 
-const AreasEdit = () => {
+const EspecialidadesEdit = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const inputRef = useRef<HTMLInputElement>(null);
@@ -19,7 +21,12 @@ const AreasEdit = () => {
 
   // Get area
   const { id } = useParams();
-  const { isPending: isPendingGet, error, data, refetch } = Areas.getArea(id!);
+  const {
+    isPending: isPendingGet,
+    error,
+    data,
+    refetch,
+  } = Especialidades.getEspecialidade(id!);
   useEffect(() => {
     if (isPendingGet) {
       setIsLoading(true);
@@ -28,7 +35,7 @@ const AreasEdit = () => {
     }
 
     if (error) {
-      throw new Error("Falha ao buscar áreas");
+      throw new Error("Falha ao buscar especialidades");
     }
   }, [isPendingGet]);
 
@@ -41,28 +48,31 @@ const AreasEdit = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<IAreaPayload>();
+  } = useForm<IEspecialidadePayload>();
 
-  const { mutate, isPending: isPendingPatch } = Areas.updateArea({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
-      toast.success("área editada com sucesso");
-      navigate("..");
-    },
-    onError: (error: any) => {
-      toast.error(`falha ao editar área: ${error?.response?.data?.message}`);
-      navigate("..");
-    },
-  });
+  const { mutate, isPending: isPendingPatch } =
+    Especialidades.updateEspecialidade({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: ["especialidades"] });
+        toast.success("especialidade editada com sucesso");
+        navigate("..");
+      },
+      onError: (error: any) => {
+        toast.error(
+          `falha ao editar especialidade: ${error?.response?.data?.message}`
+        );
+        navigate("..");
+      },
+    });
 
   useEffect(() => {
     refetch();
   });
 
-  const onSubmit: SubmitHandler<IAreaPayload> = async (data) => {
+  const onSubmit: SubmitHandler<IEspecialidadePayload> = async (data) => {
     mutate({
       id: parseInt(id!),
-      area: data.area,
+      especialidade: data.especialidade,
     });
   };
 
@@ -76,18 +86,18 @@ const AreasEdit = () => {
           ✕
         </button>
         <h3 className="font-bold text-lg my-8">
-          Editar #{data?.id} | {data?.area}
+          Editar #{data?.id} | {data?.especialidade}
         </h3>
         <div className="flex flex-col gap-3">
           <input
-            {...register("area", {
-              required: "Área deve ser preenchida",
+            {...register("especialidade", {
+              required: "Especialidade deve ser preenchida",
             })}
             className="input input-bordered w-full"
-            defaultValue={data?.area}
+            defaultValue={data?.especialidade}
           />
           <div className="text-error">
-            {errors.area && <p>{errors.area.message}</p>}
+            {errors.especialidade && <p>{errors.especialidade.message}</p>}
           </div>
           <button
             disabled={isPendingPatch}
@@ -101,4 +111,4 @@ const AreasEdit = () => {
     </Modal>
   );
 };
-export default AreasEdit;
+export default EspecialidadesEdit;

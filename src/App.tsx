@@ -5,6 +5,9 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AreasEdit from "./pages/areas/AreasEdit";
 import AreasDelete from "./pages/areas/AreasDelete";
 import { Toaster } from "react-hot-toast";
+import EspecialidadesLista from "./pages/especialidades/EspecialidadesLista";
+import EspecialidadesEdit from "./pages/especialidades/EspecialidadesEdit";
+import EspecialidadesDelete from "./pages/especialidades/EspecialidadesDelete";
 
 const router = createBrowserRouter([
   {
@@ -18,6 +21,15 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "edit/:id", element: <AreasEdit /> },
           { path: "delete/:id", element: <AreasDelete /> },
+        ],
+      },
+      {
+        path: "especialidades",
+        element: <EspecialidadesLista />,
+        children: [
+          { index: true, element: <></> },
+          { path: "edit/:id", element: <EspecialidadesEdit /> },
+          { path: "delete/:id", element: <EspecialidadesDelete /> },
         ],
       },
     ],

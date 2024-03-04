@@ -1,34 +1,39 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import Areas, { IAreaPayload } from "../../models/Areas";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import Especialidades, {
+  IEspecialidadePayload,
+} from "../../models/Especialidades";
 import { useQueryClient } from "@tanstack/react-query";
 
-const AreasCreate: React.FC = () => {
-  const navigate = useNavigate();
+const EspecialidadesCreate: React.FC = () => {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<IAreaPayload>();
+  } = useForm<IEspecialidadePayload>();
 
-  const { mutate, isPending } = Areas.createArea({
+  const { mutate, isPending } = Especialidades.createEspecialidade({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
-      toast.success("área criada com sucesso");
+      toast.success("especialidade criada com sucesso");
+      queryClient.invalidateQueries({ queryKey: ["especialidades"] });
       reset();
       navigate(".");
     },
     onError: (error: any) => {
-      toast.error(`falha ao criar área: ${error?.response?.data?.message}`);
+      console.log(error);
+      toast.error(
+        `falha ao criar especialidade: ${error?.response?.data?.message}`
+      );
       reset();
     },
   });
 
-  const onSubmit: SubmitHandler<IAreaPayload> = async (data) => {
+  const onSubmit: SubmitHandler<IEspecialidadePayload> = async (data) => {
     mutate(data);
   };
 
@@ -36,14 +41,14 @@ const AreasCreate: React.FC = () => {
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-row gap-2">
       <div>
         <input
-          {...register("area", {
-            required: "Área deve ser preenchida",
+          {...register("especialidade", {
+            required: "Especialidade deve ser preenchida",
           })}
           className="input input-bordered w-[300px]"
-          placeholder="Área"
+          placeholder="Especialidade"
         />
         <div className="text-error">
-          {errors.area && <p>{errors.area.message}</p>}
+          {errors.especialidade && <p>{errors.especialidade.message}</p>}
         </div>
       </div>
       <button
@@ -56,4 +61,4 @@ const AreasCreate: React.FC = () => {
     </form>
   );
 };
-export default AreasCreate;
+export default EspecialidadesCreate;

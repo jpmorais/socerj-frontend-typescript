@@ -3,12 +3,14 @@ import React from "react";
 type Props = {
   limit: number;
   setLimit: React.Dispatch<React.SetStateAction<number>>;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const itemsLimite = [5, 10, 20, 50];
 
-const SelectPageLimit = ({ limit, setLimit }: Props) => {
+const SelectPageLimit = ({ limit, setLimit, setPage }: Props) => {
   const handleSelect = (e: any) => {
+    setPage(1);
     setLimit(e.target.value);
   };
 

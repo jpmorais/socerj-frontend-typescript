@@ -17,3 +17,8 @@ export interface IMutateObject {
   onSuccess?: any;
   onError?: any;
 }
+
+export interface IOutletDashboardContext {
+  setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
+  fetchAgain: boolean;
+}
