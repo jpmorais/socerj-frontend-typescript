@@ -1,16 +1,16 @@
 import Doctors from "../../assets/doctors.svg";
 import React, { useEffect, useState } from "react";
-import Areas from "../../models/Areas.ts";
 import { useDashboardContext } from "../layouts/DashboardLayout.tsx";
 import SearchInput from "../../components/SearchInput.tsx";
 import Pagination from "../../components/Pagination.tsx";
-import AreasCreate from "./AreasCreate.tsx";
 import { FilePenLine, Trash2 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Sort from "../../components/Sort.tsx";
+import Generos from "../../models/Generos.ts";
+import GenerosCreate from "./GenerosCreate.tsx";
 
-const AreasLista: React.FC = () => {
+const GenerosLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
@@ -18,8 +18,8 @@ const AreasLista: React.FC = () => {
 
   const { isLoading, setIsLoading } = useDashboardContext();
 
-  const { isPending, error, data, refetch } = Areas.getAllAreas({
-    filter: `area:${search}`,
+  const { isPending, error, data, refetch } = Generos.getAllGeneros({
+    filter: `genero:${search}`,
     limit: limit,
     page: page,
     sort: sort,
@@ -41,7 +41,7 @@ const AreasLista: React.FC = () => {
     }
 
     if (error) {
-      throw new Error("Falha ao buscar áreas");
+      throw new Error("Falha ao buscar gêneros");
     }
   }, [isPending]);
 
@@ -49,13 +49,13 @@ const AreasLista: React.FC = () => {
     <>
       <div className="w-full h-[100px] bg-gradient-to-r from-base-300 to-base-100 rounded-lg shadow-lg p-8 flex flex-row justify-end items-center">
         <img src={Doctors} className="mr-4 w-[60px]" />
-        <h1 className="text-4xl mr-12">Área</h1>
+        <h1 className="text-4xl mr-12">Gênero</h1>
       </div>
       <div className="flex flex-row px-10 gap-10 mt-[-10px]">
         <div className="card w-[100%] bg-base-100 shadow-xl p-5">
           <div className="flex flex-row justify-between gap-2 my-4 py-4 pr-64 pl-12 shadow-xl">
             <SearchInput setSearch={setSearch} />
-            <AreasCreate />
+            <GenerosCreate />
           </div>
           <div className="overflow-x-auto">
             <table className="table w-full">
@@ -63,8 +63,8 @@ const AreasLista: React.FC = () => {
                 <tr>
                   <th className="w-1/6">#</th>
                   <th className="w-4/6 flex flex-row gap-2">
-                    área
-                    <Sort sort={sort} setSort={setSort} sortBy="area" />
+                    gênero
+                    <Sort sort={sort} setSort={setSort} sortBy="genero" />
                   </th>
                   <th className="w-1/6">actions</th>
                 </tr>
@@ -73,7 +73,7 @@ const AreasLista: React.FC = () => {
                 {data?.items?.map((area) => (
                   <tr key={area.id}>
                     <td>{area.id}</td>
-                    <td>{area.area}</td>
+                    <td>{area.genero}</td>
                     <td className="flex flex-row gap-3">
                       <button>
                         <FilePenLine
@@ -113,4 +113,4 @@ const AreasLista: React.FC = () => {
   );
 };
 
-export default AreasLista;
+export default GenerosLista;

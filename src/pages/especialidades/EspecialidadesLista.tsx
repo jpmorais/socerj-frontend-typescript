@@ -8,11 +8,13 @@ import { Outlet, useNavigate } from "react-router-dom";
 import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Especialidades from "../../models/Especialidades.ts";
 import EspecialidadesCreate from "./EspecialidadesCreate.tsx";
+import Sort from "../../components/Sort.tsx";
 
 const EspecialidadesLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
+  const [sort, setSort] = useState<string>("");
 
   const { isLoading, setIsLoading } = useDashboardContext();
 
@@ -21,6 +23,7 @@ const EspecialidadesLista: React.FC = () => {
       filter: `especialidade:${search}`,
       limit: limit,
       page: page,
+      sort: sort,
     });
 
   const navigate = useNavigate();
@@ -60,7 +63,14 @@ const EspecialidadesLista: React.FC = () => {
               <thead>
                 <tr>
                   <th className="w-1/6">#</th>
-                  <th className="w-4/6">especialidade</th>
+                  <th className="w-4/6 flex flex-row gap-2">
+                    especialidade{" "}
+                    <Sort
+                      sort={sort}
+                      setSort={setSort}
+                      sortBy="especialidade"
+                    />
+                  </th>
                   <th className="w-1/6">actions</th>
                 </tr>
               </thead>

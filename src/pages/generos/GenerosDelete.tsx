@@ -5,8 +5,9 @@ import { useEffect } from "react";
 import { useDashboardContext } from "../layouts/DashboardLayout";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import Generos from "../../models/Generos";
 
-const AreasDelete = () => {
+const GenerosDelete = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, setIsLoading } = useDashboardContext();
@@ -15,9 +16,9 @@ const AreasDelete = () => {
     navigate("..");
   };
 
-  // Get area
+  // Get genero
   const { id } = useParams();
-  const { isPending: isPendingGet, error, data } = Areas.getArea(id!);
+  const { isPending: isPendingGet, error, data } = Generos.getGenero(id!);
   useEffect(() => {
     if (isPendingGet) {
       setIsLoading(true);
@@ -26,19 +27,19 @@ const AreasDelete = () => {
     }
 
     if (error) {
-      throw new Error("Falha ao buscar áreas");
+      throw new Error("Falha ao buscar gênero");
     }
   }, [isPendingGet]);
 
   // Delete area
-  const { mutate, isPending: isPendingPatch } = Areas.deleteArea({
+  const { mutate, isPending: isPendingPatch } = Generos.deleteGenero({
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["areas"] });
-      toast.success("área excluída com sucesso");
+      queryClient.invalidateQueries({ queryKey: ["generos"] });
+      toast.success("gênero excluída com sucesso");
       navigate("..");
     },
     onError: (error: any) => {
-      toast.error(`falha ao excluir área: ${error?.response?.data?.message}`);
+      toast.error(`falha ao excluir gênero: ${error?.response?.data?.message}`);
       navigate("..");
     },
   });
@@ -58,7 +59,7 @@ const AreasDelete = () => {
           ✕
         </button>
         <h3 className="font-bold text-lg my-8">
-          Excluir #{data?.id} | {data?.area}
+          Excluir #{data?.id} | {data?.genero}
         </h3>
         <div className="flex flex-col gap-3">
           <button
@@ -73,4 +74,4 @@ const AreasDelete = () => {
     </Modal>
   );
 };
-export default AreasDelete;
+export default GenerosDelete;

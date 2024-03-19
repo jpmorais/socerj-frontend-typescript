@@ -6,20 +6,20 @@ import {
 } from "../types/types";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-export interface IArea {
+export interface IGenero {
   id: number;
-  area: string;
+  genero: string;
   createdAt?: string;
   updatedAt?: string;
 }
 
-export interface IAreaPayload extends Omit<IArea, "id"> {}
+export interface IGeneroPayload extends Omit<IGenero, "id"> {}
 
-class Areas {
-  static getAllAreas(params?: IGetAllRequestParams) {
+class Generos {
+  static getAllGeneros(params?: IGetAllRequestParams) {
     const fetchaData = async () => {
-      const response = await axios.get<IGetAllApiResponse<IArea>>(
-        `/api/v1/areas?filter=${params?.filter || ""}&sort=${
+      const response = await axios.get<IGetAllApiResponse<IGenero>>(
+        `/api/v1/generos?filter=${params?.filter || ""}&sort=${
           params?.sort || ""
         }&limit=${params?.limit || 20}&page=${params?.page || 1}`
       );
@@ -30,32 +30,26 @@ class Areas {
     };
 
     return useQuery({
-      queryKey: [
-        "areas",
-        params?.filter,
-        params?.page,
-        params?.limit,
-        params?.sort,
-      ],
+      queryKey: ["generos", params?.filter, params?.page, params?.limit],
       queryFn: fetchaData,
     });
   }
 
-  static getArea(id: string) {
+  static getGenero(id: string) {
     const fetchaData = async () => {
-      const response = await axios.get<IArea>(`/api/v1/areas/${id}`);
+      const response = await axios.get<IGenero>(`/api/v1/generos/${id}`);
       return response.data;
     };
 
     return useQuery({
-      queryKey: ["area", id],
+      queryKey: ["generos", id],
       queryFn: fetchaData,
     });
   }
 
-  static createArea({ onSuccess, onError }: IMutateObject) {
-    const postData = async (data: IAreaPayload) => {
-      const response = await axios.post(`/api/v1/areas`, data);
+  static createGenero({ onSuccess, onError }: IMutateObject) {
+    const postData = async (data: IGeneroPayload) => {
+      const response = await axios.post(`/api/v1/generos`, data);
       return response.data;
     };
 
@@ -66,10 +60,10 @@ class Areas {
     });
   }
 
-  static updateArea({ onSuccess, onError }: IMutateObject) {
-    const patchData = async (data: IArea) => {
+  static updateGenero({ onSuccess, onError }: IMutateObject) {
+    const patchData = async (data: IGenero) => {
       const { id, ...payload } = data;
-      const response = await axios.patch(`/api/v1/areas/${data.id}`, payload);
+      const response = await axios.patch(`/api/v1/generos/${data.id}`, payload);
       return response.data;
     };
 
@@ -80,9 +74,9 @@ class Areas {
     });
   }
 
-  static deleteArea({ onSuccess, onError }: IMutateObject) {
+  static deleteGenero({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/areas/${id}`);
+      const response = await axios.delete(`/api/v1/generos/${id}`);
       return response.data;
     };
 
@@ -94,4 +88,4 @@ class Areas {
   }
 }
 
-export default Areas;
+export default Generos;

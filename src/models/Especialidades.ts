@@ -30,7 +30,13 @@ class Especialidades {
     };
 
     return useQuery({
-      queryKey: ["especialidades", params?.filter, params?.page, params?.limit],
+      queryKey: [
+        "especialidades",
+        params?.filter,
+        params?.page,
+        params?.limit,
+        params?.sort,
+      ],
       queryFn: fetchaData,
     });
   }

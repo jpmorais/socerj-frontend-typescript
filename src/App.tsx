@@ -8,6 +8,9 @@ import { Toaster } from "react-hot-toast";
 import EspecialidadesLista from "./pages/especialidades/EspecialidadesLista";
 import EspecialidadesEdit from "./pages/especialidades/EspecialidadesEdit";
 import EspecialidadesDelete from "./pages/especialidades/EspecialidadesDelete";
+import GenerosLista from "./pages/generos/GenerosLista";
+import GenerosEdit from "./pages/generos/GenerosEdit";
+import GenerosDelete from "./pages/generos/GenerosDelete";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +24,21 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "edit/:id", element: <AreasEdit /> },
           { path: "delete/:id", element: <AreasDelete /> },
+        ],
+      },
+      {
+        path: "generos",
+        element: <GenerosLista />,
+        children: [
+          { index: true, element: <></> },
+          {
+            path: "edit/:id",
+            element: <GenerosEdit />,
+          },
+          {
+            path: "delete/:id",
+            element: <GenerosDelete />,
+          },
         ],
       },
       {
