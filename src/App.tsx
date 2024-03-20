@@ -11,6 +11,10 @@ import EspecialidadesDelete from "./pages/especialidades/EspecialidadesDelete";
 import GenerosLista from "./pages/generos/GenerosLista";
 import GenerosEdit from "./pages/generos/GenerosEdit";
 import GenerosDelete from "./pages/generos/GenerosDelete";
+import PatrocinadoresLista from "./pages/patrocinadores/PatrocinadoresLista";
+import PatrocinadoresCreate from "./pages/patrocinadores/PatrocinadoresCreate";
+import PatrocinadoresEdit from "./pages/patrocinadores/PatrocinadoresEdit";
+import PatrocinadoresDelete from "./pages/patrocinadores/PatrocinadoresDelete";
 
 const router = createBrowserRouter([
   {
@@ -24,6 +28,28 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "edit/:id", element: <AreasEdit /> },
           { path: "delete/:id", element: <AreasDelete /> },
+        ],
+      },
+      {
+        path: "patrocinadores",
+        element: <PatrocinadoresLista />,
+        children: [
+          {
+            index: true,
+            element: <></>,
+          },
+          {
+            path: "create",
+            element: <PatrocinadoresCreate />,
+          },
+          {
+            path: "edit/:id",
+            element: <PatrocinadoresEdit />,
+          },
+          {
+            path: "delete/:id",
+            element: <PatrocinadoresDelete />,
+          },
         ],
       },
       {

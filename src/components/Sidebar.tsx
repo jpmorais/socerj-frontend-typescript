@@ -1,5 +1,4 @@
-import { GraduationCap, Stethoscope, PersonStanding } from "lucide-react";
-import { useEffect, useState } from "react";
+import { GraduationCap, Stethoscope, PersonStanding, Gift } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pages = [
@@ -20,6 +19,12 @@ const pages = [
     text: "generos",
     icon_lg: <PersonStanding size={32} />,
     icon_sm: <PersonStanding size={24} />,
+  },
+  {
+    link: "patrocinadores",
+    text: "patrocinadores",
+    icon_lg: <Gift size={32} />,
+    icon_sm: <Gift size={24} />,
   },
 ];
 
