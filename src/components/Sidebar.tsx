@@ -1,4 +1,12 @@
-import { GraduationCap, Stethoscope, PersonStanding, Gift } from "lucide-react";
+import {
+  GraduationCap,
+  Stethoscope,
+  PersonStanding,
+  Gift,
+  CalendarDays,
+  Building2,
+  UserCog,
+} from "lucide-react";
 import { Link } from "react-router-dom";
 
 const pages = [
@@ -23,20 +31,26 @@ const pages = [
   {
     link: "patrocinadores",
     text: "patrocinadores",
-    icon_lg: <Gift size={32} />,
-    icon_sm: <Gift size={24} />,
+    icon_lg: <Building2 size={32} />,
+    icon_sm: <Building2 size={24} />,
   },
   {
     link: "eventos",
     text: "eventos",
-    icon_lg: <Gift size={32} />,
-    icon_sm: <Gift size={24} />,
+    icon_lg: <CalendarDays size={32} />,
+    icon_sm: <CalendarDays size={24} />,
   },
   {
     link: "cupons",
     text: "cupons",
     icon_lg: <Gift size={32} />,
     icon_sm: <Gift size={24} />,
+  },
+  {
+    link: "categorias",
+    text: "categorias",
+    icon_lg: <UserCog size={32} />,
+    icon_sm: <UserCog size={24} />,
   },
 ];
 

@@ -22,6 +22,10 @@ import EventosDelete from "./pages/eventos/EventosDelete";
 import CuponsLista from "./pages/cupons/CuponsLista";
 import CuponsCreate from "./pages/cupons/CuponsCreate";
 import CuponsDelete from "./pages/cupons/CuponsDelete";
+import CategoriasLista from "./pages/categorias/CategoriasLista";
+import CategoriasCreate from "./pages/categorias/CategoriasCreate";
+import CategoriasEdit from "./pages/categorias/CategoriasEdit";
+import CategoriasDelete from "./pages/categorias/CategoriasDelete";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +39,28 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "edit/:id", element: <AreasEdit /> },
           { path: "delete/:id", element: <AreasDelete /> },
+        ],
+      },
+      {
+        path: "categorias",
+        element: <CategoriasLista />,
+        children: [
+          {
+            index: true,
+            element: <></>,
+          },
+          {
+            path: "create",
+            element: <CategoriasCreate />,
+          },
+          {
+            path: "edit/:id",
+            element: <CategoriasEdit />,
+          },
+          {
+            path: "delete/:id",
+            element: <CategoriasDelete />,
+          },
         ],
       },
       {
