@@ -26,6 +26,18 @@ const pages = [
     icon_lg: <Gift size={32} />,
     icon_sm: <Gift size={24} />,
   },
+  {
+    link: "eventos",
+    text: "eventos",
+    icon_lg: <Gift size={32} />,
+    icon_sm: <Gift size={24} />,
+  },
+  {
+    link: "cupons",
+    text: "cupons",
+    icon_lg: <Gift size={32} />,
+    icon_sm: <Gift size={24} />,
+  },
 ];
 
 const Sidebar = ({ closed }: { closed: boolean }) => {
@@ -40,6 +52,7 @@ const Sidebar = ({ closed }: { closed: boolean }) => {
           {pages.map((item) => {
             return (
               <Link
+                key={item.link}
                 to={item.link}
                 className="flex flex-row gap-4 font-semibold text-lg items-center"
               >
@@ -58,6 +71,7 @@ const Sidebar = ({ closed }: { closed: boolean }) => {
           {pages.map((item) => {
             return (
               <Link
+                key={item.link}
                 to={item.link}
                 className="flex flex-row gap-4 font-semibold text-lg items-center"
               >

@@ -15,6 +15,13 @@ import PatrocinadoresLista from "./pages/patrocinadores/PatrocinadoresLista";
 import PatrocinadoresCreate from "./pages/patrocinadores/PatrocinadoresCreate";
 import PatrocinadoresEdit from "./pages/patrocinadores/PatrocinadoresEdit";
 import PatrocinadoresDelete from "./pages/patrocinadores/PatrocinadoresDelete";
+import EventosLista from "./pages/eventos/EventosLista";
+import EventosCreate from "./pages/eventos/EventosCreate";
+import EventosEdit from "./pages/eventos/EventosEdit";
+import EventosDelete from "./pages/eventos/EventosDelete";
+import CuponsLista from "./pages/cupons/CuponsLista";
+import CuponsCreate from "./pages/cupons/CuponsCreate";
+import CuponsDelete from "./pages/cupons/CuponsDelete";
 
 const router = createBrowserRouter([
   {
@@ -28,6 +35,34 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "edit/:id", element: <AreasEdit /> },
           { path: "delete/:id", element: <AreasDelete /> },
+        ],
+      },
+      {
+        path: "cupons",
+        element: <CuponsLista />,
+        children: [
+          { index: true, element: <></> },
+          { path: "create", element: <CuponsCreate /> },
+          { path: "delete/:id", element: <CuponsDelete /> },
+        ],
+      },
+      {
+        path: "eventos",
+        element: <EventosLista />,
+        children: [
+          { index: true, element: <></> },
+          {
+            path: "create",
+            element: <EventosCreate />,
+          },
+          {
+            path: "edit/:id",
+            element: <EventosEdit />,
+          },
+          {
+            path: "delete/:id",
+            element: <EventosDelete />,
+          },
         ],
       },
       {

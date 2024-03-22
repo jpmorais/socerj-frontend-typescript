@@ -3,15 +3,16 @@ import { Search } from "lucide-react";
 
 type Props = {
   setSearch: React.Dispatch<React.SetStateAction<string>>;
+  prefix: string;
 };
 
-const SearchInput = ({ setSearch }: Props) => {
+const SearchInput = ({ setSearch, prefix }: Props) => {
   const refSearch = useRef<HTMLInputElement>(null);
   const refIcon = useRef<SVGSVGElement>(null);
 
   const handleSearch = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (event.key === "Enter") {
-      setSearch(refSearch.current?.value ?? "");
+    if (event.key === "Enter" && refSearch.current?.value) {
+      setSearch(`${prefix}${refSearch.current?.value}`);
     }
   };
 
@@ -26,7 +27,7 @@ const SearchInput = ({ setSearch }: Props) => {
       />
       <button
         onClick={() => {
-          setSearch(refSearch.current?.value ?? "");
+          setSearch(`${prefix}${refSearch.current?.value}`);
         }}
       >
         <Search size={20} ref={refIcon} />

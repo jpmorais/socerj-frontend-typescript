@@ -7,24 +7,40 @@ import { FilePenLine, Trash2 } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Sort from "../../components/Sort.tsx";
-import Generos from "../../models/Generos.ts";
+import Eventos from "../../models/Eventos.ts";
+import Cupons, { ICupom } from "../../models/Cupons.ts";
 import Patrocinadores from "../../models/Patrocinadores.ts";
 
-const PatrocinadoresLista: React.FC = () => {
+const CuponsLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [sort, setSort] = useState<string>("");
+  const [patrocinadorId, setPatrocinadorId] = useState("");
+  const [eventoId, setEventoid] = useState("");
 
   const { isLoading, setIsLoading } = useDashboardContext();
 
-  const { isPending, error, data, refetch } =
-    Patrocinadores.getAllPatrocinadores({
-      filter: search,
-      limit: limit,
-      page: page,
-      sort: sort,
-    });
+  // busca eventos
+  const { data: eventos } = Eventos.getAllEventos({
+    filter: "",
+    sort: "evento:asc",
+  });
+
+  // busca patrocinadores
+  const { data: patrocinadores } = Patrocinadores.getAllPatrocinadores({
+    filter: "",
+    sort: "patrocinador:asc",
+  });
+
+  const { isPending, error, data, refetch } = Cupons.getAllCupons({
+    filter: `${patrocinadorId && `patrocinadorId=${patrocinadorId}`},${
+      eventoId && `eventoId=${eventoId}`
+    },${search}`,
+    limit: limit,
+    page: page,
+    sort: sort,
+  });
 
   const navigate = useNavigate();
   const onClickEdit = (id: number) => {
@@ -42,7 +58,7 @@ const PatrocinadoresLista: React.FC = () => {
     }
 
     if (error) {
-      throw new Error("Falha ao buscar patrocinadores");
+      throw new Error("Falha ao buscar cupons");
     }
   }, [isPending]);
 
@@ -50,12 +66,38 @@ const PatrocinadoresLista: React.FC = () => {
     <>
       <div className="w-full h-[100px] bg-gradient-to-r from-base-300 to-base-100 rounded-lg shadow-lg p-8 flex flex-row justify-end items-center">
         <img src={Doctors} className="mr-4 w-[60px]" />
-        <h1 className="text-4xl mr-12">Patrocinador</h1>
+        <h1 className="text-4xl mr-12">Cupons</h1>
       </div>
       <div className="flex flex-row px-10 gap-10 mt-[-10px]">
         <div className="card w-[100%] bg-base-100 shadow-xl p-5">
           <div className="flex flex-row justify-between gap-2 my-4 py-4 pr-24 pl-12 shadow-xl">
-            <SearchInput setSearch={setSearch} prefix="patrocinador:" />
+            <SearchInput setSearch={setSearch} prefix="cupom:" />
+            <select
+              className="select select-bordered w-full"
+              onChange={(e) => setPatrocinadorId(e.target.value)}
+            >
+              <option value="">Selecione o patrocinador</option>
+              {patrocinadores?.items.map((patrocinador) => {
+                return (
+                  <option key={patrocinador.id} value={patrocinador.id}>
+                    {patrocinador.patrocinador}
+                  </option>
+                );
+              })}
+            </select>
+            <select
+              className="select select-bordered w-full"
+              onChange={(e) => setEventoid(e.target.value)}
+            >
+              <option value="">Selecione o evento</option>
+              {eventos?.items.map((evento) => {
+                return (
+                  <option key={evento.id} value={evento.id}>
+                    {evento.evento}
+                  </option>
+                );
+              })}
+            </select>
             <NavLink to="./create">
               <button className="btn btn-primary font-semibold text-lg">
                 Cadastrar
@@ -67,33 +109,35 @@ const PatrocinadoresLista: React.FC = () => {
               <thead>
                 <tr>
                   <th className="w-1/6">#</th>
-                  <th className="w-2/6 flex flex-row gap-2">
-                    patrocinador
-                    <Sort sort={sort} setSort={setSort} sortBy="patrocinador" />
+                  <th className="w-1/6 flex flex-row gap-2">
+                    cupom
+                    <Sort sort={sort} setSort={setSort} sortBy="cupom" />
                   </th>
-                  <th className="w-1/6">email</th>
-                  <th className="w-1/6">contato</th>
-                  <th className="w-1/6">actions</th>
+                  <th className="w-1/6">evento</th>
+                  <th className="w-1/6">patrocinador</th>
+                  <th className="w-1/6">valor</th>
+                  <th className="w-1/6">ações</th>
                 </tr>
               </thead>
               <tbody>
-                {data?.items?.map((patrocinador) => (
-                  <tr key={patrocinador.id}>
-                    <td>{patrocinador.id}</td>
-                    <td>{patrocinador.patrocinador}</td>
-                    <td>{patrocinador.email}</td>
-                    <td>{patrocinador.contato}</td>
+                {data?.items?.map((cupom) => (
+                  <tr key={cupom.id}>
+                    <td>{cupom.id}</td>
+                    <td>{cupom.cupom}</td>
+                    <td>{cupom.evento?.evento}</td>
+                    <td>{cupom.patrocinador?.patrocinador}</td>
+                    <td>{showValorCupom(cupom)}</td>
                     <td className="flex flex-row gap-3">
                       <button>
                         <FilePenLine
                           size={20}
-                          onClick={() => onClickEdit(patrocinador.id)}
+                          onClick={() => onClickEdit(cupom.id)}
                         />
                       </button>
                       <button>
                         <Trash2
                           size={20}
-                          onClick={() => onClickDelete(patrocinador.id)}
+                          onClick={() => onClickDelete(cupom.id)}
                         />
                       </button>
                     </td>
@@ -122,4 +166,12 @@ const PatrocinadoresLista: React.FC = () => {
   );
 };
 
-export default PatrocinadoresLista;
+export default CuponsLista;
+
+function showValorCupom(cupom: ICupom) {
+  if (cupom.valorDesconto) {
+    return `R$ ${cupom.valorDesconto}`;
+  } else {
+    return `${cupom.percDesconto}%`;
+  }
+}

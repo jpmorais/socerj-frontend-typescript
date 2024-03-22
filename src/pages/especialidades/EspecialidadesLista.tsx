@@ -20,7 +20,7 @@ const EspecialidadesLista: React.FC = () => {
 
   const { isPending, error, data, refetch } =
     Especialidades.getAllEspecialidades({
-      filter: `especialidade:${search}`,
+      filter: search,
       limit: limit,
       page: page,
       sort: sort,
@@ -55,7 +55,7 @@ const EspecialidadesLista: React.FC = () => {
       <div className="flex flex-row px-10 gap-10 mt-[-10px]">
         <div className="card w-[100%] bg-base-100 shadow-xl p-5">
           <div className="flex flex-row justify-between gap-2 my-4 py-4 pr-64 pl-12 shadow-xl">
-            <SearchInput setSearch={setSearch} />
+            <SearchInput setSearch={setSearch} prefix="especialidade:" />
             <EspecialidadesCreate />
           </div>
           <div className="overflow-x-auto">

@@ -4,13 +4,14 @@ import { useDashboardContext } from "../layouts/DashboardLayout.tsx";
 import SearchInput from "../../components/SearchInput.tsx";
 import Pagination from "../../components/Pagination.tsx";
 import { FilePenLine, Trash2 } from "lucide-react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Sort from "../../components/Sort.tsx";
 import Generos from "../../models/Generos.ts";
-import GenerosCreate from "./GenerosCreate.tsx";
+import Patrocinadores from "../../models/Patrocinadores.ts";
+import Eventos from "../../models/Eventos.ts";
 
-const GenerosLista: React.FC = () => {
+const EventosLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
@@ -18,7 +19,7 @@ const GenerosLista: React.FC = () => {
 
   const { isLoading, setIsLoading } = useDashboardContext();
 
-  const { isPending, error, data, refetch } = Generos.getAllGeneros({
+  const { isPending, error, data, refetch } = Eventos.getAllEventos({
     filter: search,
     limit: limit,
     page: page,
@@ -41,7 +42,7 @@ const GenerosLista: React.FC = () => {
     }
 
     if (error) {
-      throw new Error("Falha ao buscar gêneros");
+      throw new Error("Falha ao buscar eventos");
     }
   }, [isPending]);
 
@@ -49,42 +50,52 @@ const GenerosLista: React.FC = () => {
     <>
       <div className="w-full h-[100px] bg-gradient-to-r from-base-300 to-base-100 rounded-lg shadow-lg p-8 flex flex-row justify-end items-center">
         <img src={Doctors} className="mr-4 w-[60px]" />
-        <h1 className="text-4xl mr-12">Gênero</h1>
+        <h1 className="text-4xl mr-12">Eventos</h1>
       </div>
       <div className="flex flex-row px-10 gap-10 mt-[-10px]">
         <div className="card w-[100%] bg-base-100 shadow-xl p-5">
-          <div className="flex flex-row justify-between gap-2 my-4 py-4 pr-64 pl-12 shadow-xl">
-            <SearchInput setSearch={setSearch} prefix="genero:" />
-            <GenerosCreate />
+          <div className="flex flex-row justify-between gap-2 my-4 py-4 pr-24 pl-12 shadow-xl">
+            <SearchInput setSearch={setSearch} prefix="evento:" />
+            <NavLink to="./create">
+              <button className="btn btn-primary font-semibold text-lg">
+                Cadastrar
+              </button>
+            </NavLink>
           </div>
           <div className="overflow-x-auto">
             <table className="table w-full">
               <thead>
                 <tr>
-                  <th className="w-1/6">#</th>
-                  <th className="w-4/6 flex flex-row gap-2">
-                    gênero
-                    <Sort sort={sort} setSort={setSort} sortBy="genero" />
+                  <th className="w-1/8">#</th>
+                  <th className="w-3/8 flex flex-row gap-2">
+                    evento
+                    <Sort sort={sort} setSort={setSort} sortBy="evento" />
                   </th>
-                  <th className="w-1/6">actions</th>
+                  <th className="w-1/8">inicio</th>
+                  <th className="w-1/8">final</th>
+                  <th className="w-1/8">aberto</th>
+                  <th className="w-1/8">ações</th>{" "}
                 </tr>
               </thead>
               <tbody>
-                {data?.items?.map((area) => (
-                  <tr key={area.id}>
-                    <td>{area.id}</td>
-                    <td>{area.genero}</td>
+                {data?.items?.map((evento) => (
+                  <tr key={evento.id}>
+                    <td>{evento.id}</td>
+                    <td>{evento.evento}</td>
+                    <td>{evento.inicio}</td>
+                    <td>{evento.final}</td>
+                    <td>{evento.aberto ? "sim" : "não"}</td>
                     <td className="flex flex-row gap-3">
                       <button>
                         <FilePenLine
                           size={20}
-                          onClick={() => onClickEdit(area.id)}
+                          onClick={() => onClickEdit(evento.id)}
                         />
                       </button>
                       <button>
                         <Trash2
                           size={20}
-                          onClick={() => onClickDelete(area.id)}
+                          onClick={() => onClickDelete(evento.id)}
                         />
                       </button>
                     </td>
@@ -113,4 +124,4 @@ const GenerosLista: React.FC = () => {
   );
 };
 
-export default GenerosLista;
+export default EventosLista;

@@ -19,7 +19,7 @@ const AreasLista: React.FC = () => {
   const { isLoading, setIsLoading } = useDashboardContext();
 
   const { isPending, error, data, refetch } = Areas.getAllAreas({
-    filter: `area:${search}`,
+    filter: search,
     limit: limit,
     page: page,
     sort: sort,
@@ -54,7 +54,7 @@ const AreasLista: React.FC = () => {
       <div className="flex flex-row px-10 gap-10 mt-[-10px]">
         <div className="card w-[100%] bg-base-100 shadow-xl p-5">
           <div className="flex flex-row justify-between gap-2 my-4 py-4 pr-64 pl-12 shadow-xl">
-            <SearchInput setSearch={setSearch} />
+            <SearchInput setSearch={setSearch} prefix="area:" />
             <AreasCreate />
           </div>
           <div className="overflow-x-auto">
