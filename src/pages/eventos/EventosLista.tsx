@@ -10,6 +10,7 @@ import Sort from "../../components/Sort.tsx";
 import Generos from "../../models/Generos.ts";
 import Patrocinadores from "../../models/Patrocinadores.ts";
 import Eventos from "../../models/Eventos.ts";
+import { ISOToDate } from "../../utils/funcoes.tsx";
 
 const EventosLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
@@ -82,9 +83,15 @@ const EventosLista: React.FC = () => {
                   <tr key={evento.id}>
                     <td>{evento.id}</td>
                     <td>{evento.evento}</td>
-                    <td>{evento.inicio}</td>
-                    <td>{evento.final}</td>
-                    <td>{evento.aberto ? "sim" : "não"}</td>
+                    <td>{ISOToDate(evento.inicio)}</td>
+                    <td>{ISOToDate(evento.final)}</td>
+                    <td>
+                      {evento.aberto ? (
+                        <span className="text-green-500">aberto</span>
+                      ) : (
+                        <span className="text-red-500">fechado</span>
+                      )}
+                    </td>
                     <td className="flex flex-row gap-3">
                       <button>
                         <FilePenLine

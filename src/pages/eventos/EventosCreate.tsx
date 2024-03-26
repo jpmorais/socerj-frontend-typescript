@@ -1,19 +1,17 @@
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import { useRef } from "react";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
 import { useDashboardContext } from "../layouts/DashboardLayout";
 import { useQueryClient } from "@tanstack/react-query";
-import Patrocinadores, {
-  IPatrocinadorPayload,
-} from "../../models/Patrocinadores";
 import Eventos, { IEventoPayload } from "../../models/Eventos";
+import InputMask from "react-input-mask";
+import { dateToISO } from "../../utils/funcoes";
 
 const EventosCreate = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const inputRef = useRef<HTMLInputElement>(null);
   const { isLoading, setIsLoading } = useDashboardContext();
 
   const onClickClose = () => {
@@ -42,8 +40,8 @@ const EventosCreate = () => {
   const onSubmit: SubmitHandler<IEventoPayload> = async (data) => {
     mutate({
       evento: data.evento,
-      inicio: data.inicio,
-      final: data.final,
+      inicio: dateToISO(data.inicio),
+      final: dateToISO(data.final),
       aberto: data.aberto,
     });
   };
@@ -74,12 +72,13 @@ const EventosCreate = () => {
           </div>
           <label className="input input-bordered flex items-center gap-2">
             Início
-            <input
+            <InputMask
               {...register("inicio", {
                 required: "Início deve ser preenchido",
               })}
               placeholder="início"
               className="grow"
+              mask="99/99/9999"
             />
           </label>
           <div className="text-error">
@@ -87,24 +86,25 @@ const EventosCreate = () => {
           </div>
           <label className="input input-bordered flex items-center gap-2">
             Final
-            <input
+            <InputMask
               {...register("final", {
                 required: "Final deve ser preenchido",
               })}
               placeholder="final"
               className="grow"
+              mask="99/99/9999"
             />
           </label>
           <div className="text-error">
             {errors.final && <p>{errors.final.message}</p>}
           </div>
           <label className="input input-bordered flex items-center gap-2">
-            Aberto
             <input
+              type="checkbox"
               {...register("aberto")}
-              placeholder="aberto"
-              className="grow"
-            />
+              className="checkbox"
+            />{" "}
+            Aberto?
           </label>
           <button
             disabled={isPendingPatch}

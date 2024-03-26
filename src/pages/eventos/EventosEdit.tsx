@@ -1,15 +1,13 @@
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useEffect, useRef } from "react";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
 import { useDashboardContext } from "../layouts/DashboardLayout";
 import { useQueryClient } from "@tanstack/react-query";
-import Generos, { IGeneroPayload } from "../../models/Generos";
-import Patrocinadores, {
-  IPatrocinadorPayload,
-} from "../../models/Patrocinadores";
 import Eventos, { IEventoPayload } from "../../models/Eventos";
+import InputMask from "react-input-mask";
+import { ISOToDate, dateToISO } from "../../utils/funcoes";
 
 const EventosEdit = () => {
   const navigate = useNavigate();
@@ -29,6 +27,7 @@ const EventosEdit = () => {
     data,
     refetch,
   } = Eventos.getEvento(id!);
+
   useEffect(() => {
     if (isPendingGet) {
       setIsLoading(true);
@@ -72,8 +71,8 @@ const EventosEdit = () => {
     mutate({
       id: parseInt(id!),
       evento: data.evento,
-      inicio: data.inicio,
-      final: data.final,
+      inicio: dateToISO(data.inicio),
+      final: dateToISO(data.final),
       aberto: data.aberto,
     });
   };
@@ -106,12 +105,13 @@ const EventosEdit = () => {
           </div>
           <label className="input input-bordered flex items-center gap-2">
             Início
-            <input
+            <InputMask
               {...register("inicio", {
                 required: "Início deve ser preenchido",
               })}
-              defaultValue={data?.inicio}
+              defaultValue={ISOToDate(data?.inicio!)}
               className="grow"
+              mask="99/99/9999"
             />
           </label>
           <div className="text-error">
@@ -119,12 +119,13 @@ const EventosEdit = () => {
           </div>
           <label className="input input-bordered flex items-center gap-2">
             Final
-            <input
+            <InputMask
               {...register("final", {
                 required: "Final deve ser preenchido",
               })}
-              defaultValue={data?.final}
+              defaultValue={ISOToDate(data?.final!)}
               className="grow"
+              mask="99/99/9999"
             />
           </label>
           <div className="text-error">
@@ -132,7 +133,12 @@ const EventosEdit = () => {
           </div>
           <label className="input input-bordered flex items-center gap-2">
             Aberto
-            <input {...register("aberto")} className="grow" />
+            <input
+              type="checkbox"
+              {...register("aberto")}
+              className="checkbox"
+              defaultChecked={data?.aberto}
+            />{" "}
           </label>
           <button
             disabled={isPendingPatch}
