@@ -26,6 +26,8 @@ import CategoriasLista from "./pages/categorias/CategoriasLista";
 import CategoriasCreate from "./pages/categorias/CategoriasCreate";
 import CategoriasEdit from "./pages/categorias/CategoriasEdit";
 import CategoriasDelete from "./pages/categorias/CategoriasDelete";
+import UsuariosLista from "./pages/usuarios/UsuariosLista";
+import UsuariosCreate from "./pages/usuarios/UsuariosCreate";
 
 const router = createBrowserRouter([
   {
@@ -39,6 +41,17 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "edit/:id", element: <AreasEdit /> },
           { path: "delete/:id", element: <AreasDelete /> },
+        ],
+      },
+      {
+        path: "usuarios",
+        element: <UsuariosLista />,
+        children: [
+          { index: true, element: <></> },
+          {
+            path: "create",
+            element: <UsuariosCreate />,
+          },
         ],
       },
       {

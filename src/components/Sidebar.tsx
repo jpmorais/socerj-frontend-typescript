@@ -6,6 +6,7 @@ import {
   CalendarDays,
   Building2,
   UserCog,
+  UserRound,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -51,6 +52,12 @@ const pages = [
     text: "categorias",
     icon_lg: <UserCog size={32} />,
     icon_sm: <UserCog size={24} />,
+  },
+  {
+    link: "usuarios",
+    text: "usuários",
+    icon_lg: <UserRound size={32} />,
+    icon_sm: <UserRound size={24} />,
   },
 ];
 
