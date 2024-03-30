@@ -6,20 +6,27 @@ import {
 } from "../types/types";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
-export interface ICategoria {
+export interface ICategoriaInscricao {
   id: number;
-  categoria: string;
-  tipo: string;
-  visivel: boolean;
+  eventoId: number;
+  categoriaId: number;
+  dataLimite: string;
+  quantidade?: number;
+  valor: number;
+  categoria?: {
+    categoria: string;
+    visivel: boolean;
+  };
 }
 
-export interface ICategoriaPayload extends Omit<ICategoria, "id"> {}
+export interface ICategoriaInscricaoPayload
+  extends Omit<ICategoriaInscricao, "id"> {}
 
-class Categorias {
-  static getAllCategorias(params?: IGetAllRequestParams) {
+class CategoriasInscricao {
+  static getAllCateriasIncricao(params?: IGetAllRequestParams) {
     const fetchaData = async () => {
-      const response = await axios.get<IGetAllApiResponse<ICategoria>>(
-        `/api/v1/categorias?filter=${params?.filter || ""}&sort=${
+      const response = await axios.get<IGetAllApiResponse<ICategoriaInscricao>>(
+        `/api/v1/categorias-inscricao?filter=${params?.filter || ""}&sort=${
           params?.sort || ""
         }&limit=${params?.limit || 20}&page=${params?.page || 1}`
       );
@@ -31,7 +38,7 @@ class Categorias {
 
     return useQuery({
       queryKey: [
-        "categorias",
+        "categoriasInscricao",
         params?.filter,
         params?.page,
         params?.limit,
@@ -41,21 +48,24 @@ class Categorias {
     });
   }
 
-  static getCategoria(id: string) {
+  static getCategoriaInscricao(id: string) {
     const fetchaData = async () => {
-      const response = await axios.get<ICategoria>(`/api/v1/categorias/${id}`);
+      const response = await axios.get<ICategoriaInscricao>(
+        `/api/v1/categorias-inscricao/${id}`
+      );
       return response.data;
     };
 
     return useQuery({
-      queryKey: ["categorias", id],
+      queryKey: ["categoriasInscricao", id],
       queryFn: fetchaData,
     });
   }
 
-  static createCategoria({ onSuccess, onError }: IMutateObject) {
-    const postData = async (data: ICategoriaPayload) => {
-      const response = await axios.post(`/api/v1/categorias`, data);
+  static createCategoriaInscricao({ onSuccess, onError }: IMutateObject) {
+    const postData = async (data: ICategoriaInscricaoPayload) => {
+      console.log("data", data);
+      const response = await axios.post(`/api/v1/categorias-inscricao`, data);
       return response.data;
     };
 
@@ -66,11 +76,11 @@ class Categorias {
     });
   }
 
-  static updateCategoria({ onSuccess, onError }: IMutateObject) {
-    const patchData = async (data: ICategoria) => {
+  static updateCategoriaInscricao({ onSuccess, onError }: IMutateObject) {
+    const patchData = async (data: ICategoriaInscricao) => {
       const { id, ...payload } = data;
       const response = await axios.patch(
-        `/api/v1/categorias/${data.id}`,
+        `/api/v1/categorias-inscricao/${data.id}`,
         payload
       );
       return response.data;
@@ -85,7 +95,7 @@ class Categorias {
 
   static deleteCatgoria({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/categorias/${id}`);
+      const response = await axios.delete(`/api/v1/categorias-inscricao/${id}`);
       return response.data;
     };
 
@@ -97,4 +107,4 @@ class Categorias {
   }
 }
 
-export default Categorias;
+export default CategoriasInscricao;

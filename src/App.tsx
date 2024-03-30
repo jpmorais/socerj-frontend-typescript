@@ -30,6 +30,7 @@ import UsuariosLista from "./pages/usuarios/UsuariosLista";
 import UsuariosCreate from "./pages/usuarios/UsuariosCreate";
 import UsuariosEdit from "./pages/usuarios/UsuariosEdit";
 import UsuariosDelete from "./pages/usuarios/UsuariosDelete";
+import EventosPrices from "./pages/eventos/EventosPrices";
 
 const router = createBrowserRouter([
   {
@@ -111,6 +112,10 @@ const router = createBrowserRouter([
           {
             path: "delete/:id",
             element: <EventosDelete />,
+          },
+          {
+            path: "prices/:id",
+            element: <EventosPrices />,
           },
         ],
       },

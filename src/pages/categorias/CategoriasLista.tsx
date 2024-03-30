@@ -19,7 +19,7 @@ const CategoriasLista: React.FC = () => {
 
   const { isLoading, setIsLoading } = useDashboardContext();
 
-  const { isPending, error, data, refetch } = Categorias.getAllCaterias({
+  const { isPending, error, data, refetch } = Categorias.getAllCategorias({
     filter: search,
     limit: limit,
     page: page,

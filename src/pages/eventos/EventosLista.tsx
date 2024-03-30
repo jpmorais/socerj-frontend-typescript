@@ -3,12 +3,10 @@ import React, { useEffect, useState } from "react";
 import { useDashboardContext } from "../layouts/DashboardLayout.tsx";
 import SearchInput from "../../components/SearchInput.tsx";
 import Pagination from "../../components/Pagination.tsx";
-import { FilePenLine, Trash2 } from "lucide-react";
+import { FilePenLine, Trash2, CircleDollarSign } from "lucide-react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Sort from "../../components/Sort.tsx";
-import Generos from "../../models/Generos.ts";
-import Patrocinadores from "../../models/Patrocinadores.ts";
 import Eventos from "../../models/Eventos.ts";
 import { ISOToDate } from "../../utils/funcoes.tsx";
 
@@ -105,6 +103,9 @@ const EventosLista: React.FC = () => {
                           onClick={() => onClickDelete(evento.id)}
                         />
                       </button>
+                      <NavLink to={`./prices/${evento.id}`}>
+                        <CircleDollarSign size={20} />
+                      </NavLink>
                     </td>
                   </tr>
                 ))}
