@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
@@ -12,11 +12,36 @@ import Areas from "../../models/Areas";
 import Especialidades from "../../models/Especialidades";
 import Generos from "../../models/Generos";
 import { estadosBrasil } from "../../utils/data";
+import { useEffect } from "react";
 
-const UsuariosCreate = () => {
+const UsuariosEdit = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { isLoading, setIsLoading } = useDashboardContext();
+
+  // Get usuario
+  const { id } = useParams();
+  const {
+    isPending: isPendingGet,
+    error,
+    data,
+    refetch,
+  } = Usuarios.getUsuario(id!);
+  useEffect(() => {
+    if (isPendingGet) {
+      setIsLoading(true);
+    } else {
+      setIsLoading(false);
+    }
+
+    if (error) {
+      throw new Error("Falha ao buscar usuário");
+    }
+  }, [isPendingGet]);
+
+  useEffect(() => {
+    refetch();
+  }, [data]);
 
   const onClickClose = () => {
     navigate("..");
@@ -53,20 +78,25 @@ const UsuariosCreate = () => {
     formState: { errors },
   } = useForm<IUsuarioPayload>();
 
-  const { mutate, isPending: isPendingPatch } = Usuarios.createUsuario({
+  const { mutate, isPending: isPendingPatch } = Usuarios.updateUsuario({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["usuarios"] });
-      toast.success("usuário criado com sucesso");
+      toast.success("usuário alterado com sucesso");
       navigate("..");
     },
     onError: (error: any) => {
-      toast.error(`falha ao criar usuário: ${error?.response?.data?.message}`);
+      toast.error(
+        `falha ao alterar usuário: ${error?.response?.data?.message}`
+      );
       navigate("..");
     },
   });
 
   const onSubmit: SubmitHandler<IUsuarioPayload> = async (data) => {
-    mutate(data);
+    mutate({
+      id: id!,
+      ...data,
+    });
   };
 
   return (
@@ -78,7 +108,7 @@ const UsuariosCreate = () => {
         >
           ✕
         </button>
-        <h2 className="font-bold text-xl my-3">Cadastrar usuário</h2>
+        <h2 className="font-bold text-xl my-3">Editar usuário</h2>
         <div className="grid grid-cols-10 gap-x-3 gap-y-3">
           <div className="flex flex-col gap-3 col-span-5">
             <label className="input input-bordered flex items-center gap-2">
@@ -87,7 +117,7 @@ const UsuariosCreate = () => {
                 {...register("nome", {
                   required: "Nome deve ser preenchido",
                 })}
-                placeholder="nome"
+                defaultValue={data?.nome}
                 className="grow"
               />
             </label>
@@ -102,7 +132,7 @@ const UsuariosCreate = () => {
                 {...register("email", {
                   required: "Email deve ser preenchido",
                 })}
-                placeholder="email"
+                defaultValue={data?.email}
                 className="grow"
               />
             </label>
@@ -118,6 +148,7 @@ const UsuariosCreate = () => {
                 placeholder="cpf"
                 className="grow"
                 mask="999.999.999-99"
+                defaultValue={data?.cpf}
               />
             </label>
           </div>
@@ -128,6 +159,7 @@ const UsuariosCreate = () => {
                 {...register("identidade")}
                 placeholder="identidade"
                 className="grow"
+                defaultValue={data?.identidade}
               />
             </label>
           </div>
@@ -139,6 +171,7 @@ const UsuariosCreate = () => {
                 placeholder="celular"
                 className="grow"
                 mask="(99) 99999-9999"
+                defaultValue={data?.celular}
               />
             </label>
           </div>
@@ -151,6 +184,7 @@ const UsuariosCreate = () => {
                 placeholder="telefone comercial"
                 className="grow"
                 mask="(99) 99999-9999"
+                defaultValue={data?.telefoneComercial}
               />
             </label>
           </div>
@@ -161,24 +195,21 @@ const UsuariosCreate = () => {
                 {...register("emailProfissional")}
                 placeholder="email profisional"
                 className="grow"
+                defaultValue={data?.emailProfissional}
               />
             </label>
           </div>
           <div className="flex flex-col gap-3 col-span-2">
-            <div>
-              <SelectInput
-                campoId="generoId"
-                campoNome="Gênero"
-                register={register}
-                lista={generos}
-                campoChave="id"
-                campoValor="genero"
-                required={true}
-              />
-            </div>
-            <div className="text-error">
-              {errors.generoId && <p>{errors.generoId.message}</p>}
-            </div>
+            <SelectInput
+              campoId="generoId"
+              campoNome="Gênero"
+              register={register}
+              lista={generos}
+              campoChave="id"
+              campoValor="genero"
+              defaultValue={data?.generoId}
+              required={true}
+            />
           </div>
           <div className="flex flex-col gap-3 col-span-2">
             <label className="input input-bordered flex items-center gap-4">
@@ -188,6 +219,7 @@ const UsuariosCreate = () => {
                 placeholder="cep"
                 className="grow"
                 mask="99.999-999"
+                defaultValue={data?.cep}
               />
             </label>
           </div>
@@ -198,6 +230,7 @@ const UsuariosCreate = () => {
                 {...register("endereco")}
                 placeholder="endereço"
                 className="grow"
+                defaultValue={data?.endereco}
               />
             </label>
           </div>
@@ -208,6 +241,7 @@ const UsuariosCreate = () => {
                 {...register("numero")}
                 placeholder="nº"
                 className="grow"
+                defaultValue={data?.numero}
               />
             </label>
           </div>
@@ -218,6 +252,7 @@ const UsuariosCreate = () => {
                 {...register("complemento")}
                 placeholder="complemento"
                 className="grow"
+                defaultValue={data?.complemento}
               />
             </label>
           </div>
@@ -228,6 +263,7 @@ const UsuariosCreate = () => {
                 {...register("bairro")}
                 placeholder="bairro"
                 className="grow"
+                defaultValue={data?.bairro}
               />
             </label>
           </div>
@@ -238,6 +274,7 @@ const UsuariosCreate = () => {
                 {...register("cidade")}
                 placeholder="cidade"
                 className="grow"
+                defaultValue={data?.cidade}
               />
             </label>
           </div>
@@ -249,6 +286,7 @@ const UsuariosCreate = () => {
               lista={estadosBrasil}
               campoChave="sigla"
               campoValor="nome"
+              defaultValue={data?.uf}
             />
           </div>
           <div className="flex flex-col gap-3 col-span-4">
@@ -258,6 +296,7 @@ const UsuariosCreate = () => {
                 {...register("pais")}
                 placeholder="país"
                 className="grow"
+                defaultValue={data?.pais}
               />
             </label>
           </div>
@@ -268,6 +307,7 @@ const UsuariosCreate = () => {
                 {...register("nacionalidade")}
                 placeholder="nacionalidade"
                 className="grow"
+                defaultValue={data?.nacionalidade}
               />
             </label>
           </div>
@@ -278,6 +318,7 @@ const UsuariosCreate = () => {
                 {...register("naturalidade")}
                 placeholder="naturalidade"
                 className="grow"
+                defaultValue={data?.naturalidade}
               />
             </label>
           </div>
@@ -293,6 +334,7 @@ const UsuariosCreate = () => {
               campoChave="id"
               campoValor="categoria"
               required={false}
+              defaultValue={data?.categoriaId}
             />
           </div>
           <div className="flex flex-col gap-3 col-span-3">
@@ -304,6 +346,7 @@ const UsuariosCreate = () => {
               campoChave="id"
               campoValor="especialidade"
               required={false}
+              defaultValue={data?.especialidadeId}
             />
           </div>
           <div className="flex flex-col gap-3 col-span-4">
@@ -315,12 +358,18 @@ const UsuariosCreate = () => {
               campoChave="id"
               campoValor="area"
               required={false}
+              defaultValue={data?.areaId}
             />
           </div>
           <div className="flex flex-col gap-3 col-span-3">
             <label className="input input-bordered flex items-center gap-4">
               CRM
-              <input {...register("crm")} placeholder="crm" className="grow" />
+              <input
+                {...register("crm")}
+                placeholder="crm"
+                className="grow"
+                defaultValue={data?.crm}
+              />
             </label>
           </div>
           <div className="flex flex-col gap-3 col-span-3">
@@ -330,6 +379,7 @@ const UsuariosCreate = () => {
                 {...register("registroProfissional")}
                 placeholder="registro profissional"
                 className="grow"
+                defaultValue={data?.registroProfissional}
               />
             </label>
           </div>
@@ -339,10 +389,10 @@ const UsuariosCreate = () => {
           type="submit"
           className="btn btn-primary font-semibold text-lg mt-6"
         >
-          {isPendingPatch ? "Cadastrando..." : "Cadastrar"}
+          {isPendingPatch ? "Editando..." : "Editar"}
         </button>
       </form>
     </Modal>
   );
 };
-export default UsuariosCreate;
+export default UsuariosEdit;

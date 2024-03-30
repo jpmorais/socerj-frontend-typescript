@@ -21,7 +21,7 @@ const SearchInput = ({ setSearch, prefix }: Props) => {
       <input
         type="text"
         className="grow bg-base-100"
-        placeholder="Search"
+        placeholder="Busca"
         ref={refSearch}
         onKeyDown={handleSearch}
       />

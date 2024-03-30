@@ -82,7 +82,26 @@ class Usuarios {
 
   static createUsuario({ onSuccess, onError }: IMutateObject) {
     const postData = async (data: IUsuarioPayload) => {
-      const response = await axios.post(`/api/v1/usuarios`, data);
+      let dataCorrigida: IUsuarioPayload = {
+        ...data,
+        generoId:
+          data.generoId && typeof data.generoId == "string"
+            ? parseInt(data.generoId)
+            : data.generoId,
+        categoriaId:
+          data.categoriaId && typeof data.categoriaId == "string"
+            ? parseInt(data.categoriaId)
+            : data.categoriaId,
+        areaId:
+          data.areaId && typeof data.areaId == "string"
+            ? parseInt(data.areaId)
+            : data.areaId,
+        especialidadeId:
+          data.especialidadeId && typeof data.especialidadeId == "string"
+            ? parseInt(data.especialidadeId)
+            : data.especialidadeId,
+      };
+      const response = await axios.post(`/api/v1/usuarios`, dataCorrigida);
       return response.data;
     };
 
@@ -96,9 +115,28 @@ class Usuarios {
   static updateUsuario({ onSuccess, onError }: IMutateObject) {
     const patchData = async (data: IUsuario) => {
       const { id, ...payload } = data;
+      const payloadCorrigido = {
+        ...payload,
+        generoId:
+          data.generoId && typeof data.generoId == "string"
+            ? parseInt(data.generoId)
+            : data.generoId,
+        categoriaId:
+          data.categoriaId && typeof data.categoriaId == "string"
+            ? parseInt(data.categoriaId)
+            : data.categoriaId,
+        areaId:
+          data.areaId && typeof data.areaId == "string"
+            ? parseInt(data.areaId)
+            : data.areaId,
+        especialidadeId:
+          data.especialidadeId && typeof data.especialidadeId == "string"
+            ? parseInt(data.especialidadeId)
+            : data.especialidadeId,
+      };
       const response = await axios.patch(
         `/api/v1/usuarios/${data.id}`,
-        payload
+        payloadCorrigido
       );
       return response.data;
     };

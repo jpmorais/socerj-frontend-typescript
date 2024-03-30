@@ -28,6 +28,8 @@ import CategoriasEdit from "./pages/categorias/CategoriasEdit";
 import CategoriasDelete from "./pages/categorias/CategoriasDelete";
 import UsuariosLista from "./pages/usuarios/UsuariosLista";
 import UsuariosCreate from "./pages/usuarios/UsuariosCreate";
+import UsuariosEdit from "./pages/usuarios/UsuariosEdit";
+import UsuariosDelete from "./pages/usuarios/UsuariosDelete";
 
 const router = createBrowserRouter([
   {
@@ -51,6 +53,14 @@ const router = createBrowserRouter([
           {
             path: "create",
             element: <UsuariosCreate />,
+          },
+          {
+            path: "edit/:id",
+            element: <UsuariosEdit />,
+          },
+          {
+            path: "delete/:id",
+            element: <UsuariosDelete />,
           },
         ],
       },

@@ -11,7 +11,6 @@ import Generos, { IGeneroPayload } from "../../models/Generos";
 const GenerosEdit = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const inputRef = useRef<HTMLInputElement>(null);
   const { isLoading, setIsLoading } = useDashboardContext();
 
   const onClickClose = () => {
