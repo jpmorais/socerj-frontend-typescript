@@ -165,6 +165,8 @@ const EventosPrices = () => {
               price={item.valor}
               dataLimite={item.dataLimite}
               quantidade={item.quantidade}
+              deletar={true}
+              categoriaInscricaoId={item.id}
             />
           );
         })}

@@ -94,7 +94,7 @@ class CategoriasInscricao {
   }
 
   static deleteCatgoria({ onSuccess, onError }: IMutateObject) {
-    const deleteData = async (id: string) => {
+    const deleteData = async (id: string | number) => {
       const response = await axios.delete(`/api/v1/categorias-inscricao/${id}`);
       return response.data;
     };
