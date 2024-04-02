@@ -23,7 +23,7 @@ const UsuariosCreate = () => {
   };
 
   // busca categorias
-  const { data: categorias } = Categorias.getAllCaterias({
+  const { data: categorias } = Categorias.getAllCategorias({
     filter: "",
     sort: "categoria:asc",
   });

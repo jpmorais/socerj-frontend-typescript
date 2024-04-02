@@ -7,6 +7,7 @@ import {
   Building2,
   UserCog,
   UserRound,
+  Ticket,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -58,6 +59,12 @@ const pages = [
     text: "usuários",
     icon_lg: <UserRound size={32} />,
     icon_sm: <UserRound size={24} />,
+  },
+  {
+    link: "inscricoes",
+    text: "inscrições",
+    icon_lg: <Ticket size={32} />,
+    icon_sm: <Ticket size={24} />,
   },
 ];
 

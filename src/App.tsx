@@ -31,6 +31,8 @@ import UsuariosCreate from "./pages/usuarios/UsuariosCreate";
 import UsuariosEdit from "./pages/usuarios/UsuariosEdit";
 import UsuariosDelete from "./pages/usuarios/UsuariosDelete";
 import EventosPrices from "./pages/eventos/EventosPrices";
+import InscricoesLista from "./pages/inscricoes/InscricoesLista";
+import InscricoesCreate from "./pages/inscricoes/InscricoesCreate";
 
 const router = createBrowserRouter([
   {
@@ -94,6 +96,20 @@ const router = createBrowserRouter([
           { index: true, element: <></> },
           { path: "create", element: <CuponsCreate /> },
           { path: "delete/:id", element: <CuponsDelete /> },
+        ],
+      },
+      {
+        path: "inscricoes",
+        element: <InscricoesLista />,
+        children: [
+          {
+            index: true,
+            element: <></>,
+          },
+          {
+            path: "create",
+            element: <InscricoesCreate />,
+          },
         ],
       },
       {

@@ -68,6 +68,28 @@ class Usuarios {
     });
   }
 
+  static async getUsuarioByEmail(email: string) {
+    const response = await axios.get<IGetAllApiResponse<IUsuario>>(
+      `/api/v1/usuarios?filter=email:${email}`
+    );
+    if (response.data.items.length > 0) {
+      return response.data.items[0];
+    } else {
+      return null;
+    }
+  }
+
+  static async getUsuarioByCpf(email: string) {
+    const response = await axios.get<IGetAllApiResponse<IUsuario>>(
+      `/api/v1/usuarios?filter=cpf:${email}`
+    );
+    if (response.data.items.length > 0) {
+      return response.data.items[0];
+    } else {
+      return null;
+    }
+  }
+
   static getUsuario(id: string) {
     const fetchaData = async () => {
       const response = await axios.get<IUsuario>(`/api/v1/usuarios/${id}`);

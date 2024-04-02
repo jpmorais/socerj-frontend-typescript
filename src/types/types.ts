@@ -22,3 +22,26 @@ export interface IOutletDashboardContext {
   setFetchAgain: React.Dispatch<React.SetStateAction<boolean>>;
   fetchAgain: boolean;
 }
+
+export enum FormaPagamento {
+  CARTAO,
+  BOLETO,
+  PIX,
+}
+
+export enum TipoInscricao {
+  OUVINTE,
+  PALESTRANTE,
+}
+
+export enum TipoCategoria {
+  MEDICO,
+  RESIDENTE,
+  MULTIPROFISSIONAL,
+}
+
+export enum StatusPagamento {
+  PENDENTE,
+  CANCELADO,
+  CONCLUIDO,
+}

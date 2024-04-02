@@ -1,5 +1,21 @@
 export const tiposCategoria = ["MEDICO", "RESIDENTE", "MULTIPROFISSIONAL"];
 
+export const tipoInscricao = ["OUVINTE", "PALESTRANTE"];
+export const listaTipoInscricao = {
+  items: [
+    {
+      valor: "OUVINTE",
+    },
+    {
+      valor: "PALESTRANTE",
+    },
+  ],
+};
+
+export const formaPagamento = ["PIX", "CARTAO", "BOLETO"];
+
+export const statusPagamento = ["PENDENTE", "CANCELADO", "CONCLUIDO"];
+
 export const estadosBrasil = {
   items: [
     { sigla: "AC", nome: "Acre" },
