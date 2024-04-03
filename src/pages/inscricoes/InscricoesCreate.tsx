@@ -11,6 +11,7 @@ import InputMask from "react-input-mask";
 import { FormEvent, useState } from "react";
 import Usuarios, { IUsuario } from "../../models/Usuarios";
 import { listaTipoInscricao, tipoInscricao } from "../../utils/data";
+import Cupons from "../../models/Cupons";
 
 const InscricoesCreate = () => {
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const InscricoesCreate = () => {
   const [email, setEmail] = useState<string>("");
   const [cpf, setCpf] = useState<string>("");
   const [usuario, setUsuario] = useState<IUsuario | null>();
+  const [eventoId, setEventoId] = useState();
 
   const onClickClose = () => {
     navigate("..");
@@ -29,6 +31,11 @@ const InscricoesCreate = () => {
   const { data: eventos } = Eventos.getAllEventos({
     filter: "",
     sort: "evento:asc",
+  });
+
+  const { data: cupons } = Cupons.getAllCupons({
+    filter: eventoId && `eventoId=${eventoId},inscricao:null`,
+    sort: "cupom:asc",
   });
 
   // create inscricao
@@ -140,6 +147,9 @@ const InscricoesCreate = () => {
                 campoValor="evento"
                 register={register}
                 required={true}
+                onChange={(e: any) => {
+                  setEventoId(e.target.value);
+                }}
               />
             </div>
             <div className="text-error">
@@ -163,14 +173,17 @@ const InscricoesCreate = () => {
             </div>
           </div>
           <div className="flex flex-col gap-3 col-span-3">
-            <label className="input input-bordered flex items-center gap-4">
-              Cupom
-              <input
-                {...register("cupom")}
-                placeholder="cupom"
-                className="grow"
+            <div>
+              <SelectInput
+                lista={cupons}
+                campoNome="Cupom"
+                campoId="cupomId"
+                campoChave="id"
+                campoValor="cupom"
+                register={register}
+                disabled={!eventoId}
               />
-            </label>
+            </div>
           </div>
           <div>
             <button className="btn btn-primary text-lg font-semibold">

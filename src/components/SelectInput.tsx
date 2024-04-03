@@ -12,6 +12,8 @@ type Props = {
   campoValor: string;
   required?: boolean;
   defaultValue?: string | number;
+  onChange?: any;
+  disabled?: boolean;
 };
 
 const SelectInput = ({
@@ -23,13 +25,17 @@ const SelectInput = ({
   campoValor,
   required,
   defaultValue,
+  onChange,
+  disabled,
 }: Props) => {
   return (
     <label className="form-control w-full">
       <select
+        disabled={disabled}
         defaultValue={defaultValue}
         className="select select-bordered w-full"
         {...register(campoId, {
+          onChange: onChange,
           required: required ? `${campoNome} deve ser preenchido` : false,
         })}
       >
