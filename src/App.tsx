@@ -33,6 +33,7 @@ import UsuariosDelete from "./pages/usuarios/UsuariosDelete";
 import EventosPrices from "./pages/eventos/EventosPrices";
 import InscricoesLista from "./pages/inscricoes/InscricoesLista";
 import InscricoesCreate from "./pages/inscricoes/InscricoesCreate";
+import InscricoesEdit from "./pages/inscricoes/InscricoesEdit";
 
 const router = createBrowserRouter([
   {
@@ -109,6 +110,10 @@ const router = createBrowserRouter([
           {
             path: "create",
             element: <InscricoesCreate />,
+          },
+          {
+            path: "edit/:id",
+            element: <InscricoesEdit />,
           },
         ],
       },

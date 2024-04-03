@@ -13,8 +13,34 @@ export const listaTipoInscricao = {
 };
 
 export const formaPagamento = ["PIX", "CARTAO", "BOLETO"];
+export const listaFormaPagamento = {
+  items: [
+    {
+      valor: "PIX",
+    },
+    {
+      valor: "CARTAO",
+    },
+    {
+      valor: "BOLETO",
+    },
+  ],
+};
 
 export const statusPagamento = ["PENDENTE", "CANCELADO", "CONCLUIDO"];
+export const listaStatusPagamento = {
+  items: [
+    {
+      valor: "PENDENTE",
+    },
+    {
+      valor: "CANCELADO",
+    },
+    {
+      valor: "CONCLUIDO",
+    },
+  ],
+};
 
 export const estadosBrasil = {
   items: [

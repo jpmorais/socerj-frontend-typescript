@@ -25,13 +25,13 @@ export interface IInscricao {
   tipoInscricao: TipoInscricao;
   cupom?: {};
   cupomId?: number;
-  valor: number;
+  valor?: string | number;
   dataPagamento?: string;
   formaPagamento?: FormaPagamento;
   statusPagamento?: StatusPagamento;
   notaFiscal?: string;
   confirmado?: boolean;
-  valorPago?: number;
+  valorPago?: string | number;
   createdAt?: string;
   updatedAt?: string;
 }

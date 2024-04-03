@@ -23,7 +23,7 @@ export function ISOToDate(isoDateString: string) {
     const formattedDate = new Date(`${parts[0]}-${parts[1]}-${parts[2]}`);
 
     // Extraia o dia, mês e ano da data formatada
-    const day = String(formattedDate.getDate()).padStart(2, "0"); // Adiciona zero à esquerda, se necessário
+    const day = String(formattedDate.getDate() + 1).padStart(2, "0"); // Adiciona zero à esquerda, se necessário
     const month = String(formattedDate.getMonth() + 1).padStart(2, "0"); // Adiciona zero à esquerda, se necessário
     const year = formattedDate.getFullYear();
 
