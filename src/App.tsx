@@ -34,8 +34,14 @@ import EventosPrices from "./pages/eventos/EventosPrices";
 import InscricoesLista from "./pages/inscricoes/InscricoesLista";
 import InscricoesCreate from "./pages/inscricoes/InscricoesCreate";
 import InscricoesEdit from "./pages/inscricoes/InscricoesEdit";
+import InscricoesDelete from "./pages/inscricoes/inscricoesDelete";
+import LoginPage from "./pages/auth/login";
 
 const router = createBrowserRouter([
+  {
+    path: "login",
+    element: <LoginPage />,
+  },
   {
     path: "dashboard",
     element: <DashboardLayout />,
@@ -114,6 +120,10 @@ const router = createBrowserRouter([
           {
             path: "edit/:id",
             element: <InscricoesEdit />,
+          },
+          {
+            path: "delete/:id",
+            element: <InscricoesDelete />,
           },
         ],
       },
