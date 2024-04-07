@@ -3,6 +3,8 @@ import { useState } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
+import SocerjLogo from "../../assets/socerj-logo.png";
 
 type IAuth = {
   email?: string;
@@ -14,6 +16,9 @@ const LoginPage = () => {
   const [usuario, setUsuario] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isEmail, setIsEmail] = useState<boolean>(true);
+  const [showError, setShowError] = useState<boolean>(false);
+
+  const navigate = useNavigate();
 
   const postData = async (data: IAuth) => {
     const response = await axios.post(`/api/v1/auth/login`, data);
@@ -21,12 +26,21 @@ const LoginPage = () => {
   };
 
   const onSuccess = (data: any) => {
-    console.log(data);
+    localStorage.setItem("token", data.token);
+    navigate("/dashboard");
+  };
+
+  const onError = (data: any) => {
+    setShowError(true);
+    setTimeout(() => {
+      setShowError(false);
+    }, 2000);
   };
 
   const { mutate, isPending } = useMutation({
     mutationFn: postData,
     onSuccess: onSuccess,
+    onError: onError,
   });
 
   const handleChangeOption = () => {
@@ -41,22 +55,21 @@ const LoginPage = () => {
       password: password,
       cpf: isEmail ? undefined : usuario,
     };
-    console.log(data);
     mutate(data);
   };
 
   return (
-    <div className="flex justify-center min-h-screen items-center">
+    <div
+      className="flex justify-center min-h-screen items-center"
+      data-theme="light"
+    >
       <div className="card lg:card-side bg-base-100 shadow-xl">
-        <figure>
-          <img
-            src="https://daisyui.com/images/stock/photo-1494232410401-ad00d5433cfa.jpg"
-            alt="Album"
-          />
+        <figure className="p-6">
+          <img src={SocerjLogo} alt="Socerj Logo" />
         </figure>
         <form onSubmit={handleSubmit}>
-          <div className="card-body gap-4">
-            <h2 className="card-title">Acesse o painel</h2>
+          <div className="card-body gap-6">
+            <h2 className="card-title text-3xl">Acesse o painel</h2>
             <div className="flex flex-row items-center gap-4">
               CPF{" "}
               <input
@@ -90,6 +103,9 @@ const LoginPage = () => {
             <button className="btn btn-primary">
               {isPending ? "Autenticando..." : "Login"}
             </button>
+            <div className={`text-error ${showError ? "block" : "invisible"}`}>
+              Usuário não encontrado ou senha inválida
+            </div>
           </div>
         </form>
       </div>{" "}
