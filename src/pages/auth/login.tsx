@@ -1,5 +1,5 @@
 import { UserRound, LockKeyhole } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
@@ -19,6 +19,10 @@ const LoginPage = () => {
   const [showError, setShowError] = useState<boolean>(false);
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    localStorage.removeItem("token");
+  }, []);
 
   const postData = async (data: IAuth) => {
     const response = await axios.post(`/api/v1/auth/login`, data);

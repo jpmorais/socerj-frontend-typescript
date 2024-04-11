@@ -92,7 +92,13 @@ class Usuarios {
 
   static getUsuario(id: string) {
     const fetchaData = async () => {
-      const response = await axios.get<IUsuario>(`/api/v1/usuarios/${id}`);
+      const headers = {
+        Authorization: `bearer ${localStorage.getItem("token")}`,
+      };
+
+      const response = await axios.get<IUsuario>(`/api/v1/usuarios/${id}`, {
+        headers,
+      });
       return response.data;
     };
 
