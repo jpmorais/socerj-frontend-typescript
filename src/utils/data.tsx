@@ -1,6 +1,6 @@
 export const tiposCategoria = ["MEDICO", "RESIDENTE", "MULTIPROFISSIONAL"];
 
-export const tipoInscricao = ["OUVINTE", "PALESTRANTE"];
+export const tipoInscricao = ["OUVINTE", "PALESTRANTE", "PARTICIPANTE"];
 export const listaTipoInscricao = {
   items: [
     {
@@ -8,6 +8,9 @@ export const listaTipoInscricao = {
     },
     {
       valor: "PALESTRANTE",
+    },
+    {
+      valor: "PARTICIPANTE",
     },
   ],
 };

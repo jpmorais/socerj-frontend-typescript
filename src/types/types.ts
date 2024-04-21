@@ -32,6 +32,7 @@ export enum FormaPagamento {
 export enum TipoInscricao {
   OUVINTE,
   PALESTRANTE,
+  PARTICIPANTE,
 }
 
 export enum TipoCategoria {

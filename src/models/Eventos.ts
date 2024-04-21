@@ -43,6 +43,7 @@ class Eventos {
         params?.sort,
       ],
       queryFn: fetchaData,
+      refetchOnMount: "always",
     });
   }
 
@@ -55,6 +56,7 @@ class Eventos {
     return useQuery({
       queryKey: ["eventos", id],
       queryFn: fetchaData,
+      refetchOnMount: "always",
     });
   }
 

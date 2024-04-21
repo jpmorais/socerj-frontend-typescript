@@ -39,7 +39,7 @@ const SelectInput = ({
           required: required ? `${campoNome} deve ser preenchido` : false,
         })}
       >
-        <option value="" disabled selected>
+        <option value="" disabled>
           {campoNome}
         </option>
         {lista?.items.map((item) => {

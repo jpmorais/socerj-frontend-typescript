@@ -12,10 +12,11 @@ export interface IUsuario {
   cpf?: string;
   ativo: boolean;
   password?: string;
-  areaId: number;
+  confirmaPassword?: string;
+  areaId?: number;
   generoId: number;
   categoriaId: number;
-  especialidadeId: number;
+  especialidadeId?: number;
   fotoPerfil?: string;
   nome?: string;
   identidade?: string;
@@ -38,6 +39,9 @@ export interface IUsuario {
   adimplemente?: string;
   createdAt?: string;
   updatedAt?: string;
+  categoria?: {
+    categoria: string;
+  };
 }
 
 export interface IUsuarioPayload extends Omit<IUsuario, "id"> {}

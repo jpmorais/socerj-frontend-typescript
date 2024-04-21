@@ -1,11 +1,8 @@
 import axios from "axios";
 import {
-  FormaPagamento,
   IGetAllApiResponse,
   IGetAllRequestParams,
   IMutateObject,
-  StatusPagamento,
-  TipoInscricao,
 } from "../types/types";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
@@ -22,13 +19,13 @@ export interface IInscricao {
   };
   usuarioId: string;
   dataInscricao: string;
-  tipoInscricao: TipoInscricao;
+  tipoInscricao: string;
   cupom?: {};
   cupomId?: number;
   valor?: string | number;
   dataPagamento?: string;
-  formaPagamento?: FormaPagamento;
-  statusPagamento?: StatusPagamento;
+  formaPagamento?: string;
+  statusPagamento?: string;
   notaFiscal?: string;
   confirmado?: boolean;
   valorPago?: string | number;

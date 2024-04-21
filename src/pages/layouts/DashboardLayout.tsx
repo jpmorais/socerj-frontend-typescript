@@ -1,23 +1,26 @@
 import { useState, createContext, useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import Header from "../components/Header";
+import Header from "../../components/Header";
 import Lottie from "lottie-react";
 import animationLoading from "../../assets/loading.json";
 import Sidebar from "../../components/Sidebar";
 import { jwtDecode } from "jwt-decode";
+import Usuarios, { IUsuario } from "../../models/Usuarios";
 
 interface DashboardLayoutProps {}
 
 type ContextType = {
   isLoading: boolean;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  usuario: string;
+  usuarioId: string;
+  usuario?: IUsuario | null;
 };
 
 const DashboardContext = createContext<ContextType>({
   isLoading: false,
   setIsLoading: () => {},
-  usuario: "",
+  usuarioId: "",
+  usuario: null,
 });
 
 const DashboardLayout: React.FC<DashboardLayoutProps> = () => {
@@ -41,9 +44,11 @@ const DashboardLayout: React.FC<DashboardLayoutProps> = () => {
     setUsuarioId(decoded.usuario);
   }, []);
 
+  const { isPending, error, data } = Usuarios.getUsuario(usuarioId);
+
   return (
     <DashboardContext.Provider
-      value={{ isLoading, setIsLoading, usuario: usuarioId }}
+      value={{ isLoading, setIsLoading, usuarioId: usuarioId, usuario: data }}
     >
       <div className="relative">
         {isLoading && (

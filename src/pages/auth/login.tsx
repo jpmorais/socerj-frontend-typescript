@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import axios from "axios";
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import SocerjLogo from "../../assets/socerj-logo.png";
 
 type IAuth = {
@@ -68,9 +68,16 @@ const LoginPage = () => {
       data-theme="light"
     >
       <div className="card lg:card-side bg-base-100 shadow-xl">
-        <figure className="p-6">
+        <div className="p-6 flex flex-col gap-4 justify-center">
           <img src={SocerjLogo} alt="Socerj Logo" />
-        </figure>
+          <p>
+            Não é registrado?{" "}
+            <NavLink to="../register" className="text-blue underline">
+              registre-se
+            </NavLink>
+          </p>
+        </div>
+
         <form onSubmit={handleSubmit}>
           <div className="card-body gap-6">
             <h2 className="card-title text-3xl">Acesse o painel</h2>

@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AreasLista from "./pages/areas/AreasLista";
 import DashboardLayout from "./pages/layouts/DashboardLayout";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -36,16 +37,41 @@ import InscricoesCreate from "./pages/inscricoes/InscricoesCreate";
 import InscricoesEdit from "./pages/inscricoes/InscricoesEdit";
 import InscricoesDelete from "./pages/inscricoes/inscricoesDelete";
 import LoginPage from "./pages/auth/login";
+import RegisterPage from "./pages/auth/register";
+import HomePage from "./pages/institucional/home";
+import ListaEventosPage from "./pages/painel-usuario/listaEventos";
+import InscreverEventoPage from "./pages/painel-usuario/inscreverEvento";
+import RegistradoPage from "./pages/auth/registrado";
 
 const router = createBrowserRouter([
+  {
+    index: true,
+    element: <HomePage />,
+  },
   {
     path: "login",
     element: <LoginPage />,
   },
   {
+    path: "register",
+    element: <RegisterPage />,
+  },
+  {
+    path: "registrado",
+    element: <RegistradoPage />,
+  },
+  {
     path: "dashboard",
     element: <DashboardLayout />,
     children: [
+      {
+        path: "lista-eventos",
+        element: <ListaEventosPage />,
+      },
+      {
+        path: "inscrever/:id",
+        element: <InscreverEventoPage />,
+      },
       {
         path: "areas",
         element: <AreasLista />,
@@ -213,6 +239,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <RouterProvider router={router} />
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 };

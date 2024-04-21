@@ -1,19 +1,19 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Modal from "../../components/Modal";
 import toast from "react-hot-toast";
 import { useDashboardContext } from "../layouts/DashboardLayout";
 import { useQueryClient } from "@tanstack/react-query";
 import Eventos, { IEventoPayload } from "../../models/Eventos";
-import InputMask from "react-input-mask";
 import { ISOToDate, dateToISO } from "../../utils/funcoes";
+import { DevTool } from "@hookform/devtools";
 
 const EventosEdit = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const inputRef = useRef<HTMLInputElement>(null);
   const { isLoading, setIsLoading } = useDashboardContext();
+  const [selectedPhoto, setSelectedPhoto] = useState("");
 
   const onClickClose = () => {
     navigate("..");
@@ -21,15 +21,12 @@ const EventosEdit = () => {
 
   // Get evento
   const { id } = useParams();
-  const {
-    isPending: isPendingGet,
-    error,
-    data,
-    refetch,
-  } = Eventos.getEvento(id!);
+  const { isPending: isPendingGet, error, data } = Eventos.getEvento(id!);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (isPendingGet) {
+      console.log("Set loading foi");
       setIsLoading(true);
     } else {
       setIsLoading(false);
@@ -40,20 +37,19 @@ const EventosEdit = () => {
     }
   }, [isPendingGet]);
 
-  useEffect(() => {
-    refetch();
-  }, [data]);
-
-  useEffect(() => {
-    refetch();
-  });
-
   // edit evento
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    control,
+    formState: { errors, dirtyFields },
   } = useForm<IEventoPayload>();
+
+  useEffect(() => {
+    if (data?.imagem) {
+      setSelectedPhoto(data.imagem);
+    }
+  }, [data]);
 
   const { mutate, isPending: isPendingPatch } = Eventos.updateEvento({
     onSuccess: () => {
@@ -74,11 +70,24 @@ const EventosEdit = () => {
       inicio: dateToISO(data.inicio),
       final: dateToISO(data.final),
       aberto: data.aberto,
+      imagem: selectedPhoto,
+      texto: data.texto,
     });
   };
 
+  const handlePhotoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setSelectedPhoto(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
-    <Modal>
+    <Modal classes="w-11/12 max-w-4xl">
       <form onSubmit={handleSubmit(onSubmit)}>
         <button
           className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
@@ -89,64 +98,109 @@ const EventosEdit = () => {
         <h3 className="font-bold text-lg my-8">
           Editar #{data?.id} | {data?.evento}
         </h3>
-        <div className="flex flex-col gap-3">
-          <label className="input input-bordered flex items-center gap-2">
-            Evento
-            <input
-              {...register("evento", {
-                required: "Evento deve ser preenchido",
-              })}
-              defaultValue={data?.evento}
-              className="grow"
-            />
-          </label>
-          <div className="text-error">
-            {errors.evento && <p>{errors.evento.message}</p>}
+        <div className="flex flex-row ">
+          <div className="flex flex-col gap-3 w-full">
+            <label className="input input-bordered flex items-center gap-2">
+              Evento
+              <input
+                {...register("evento", {
+                  required: "Evento deve ser preenchido",
+                })}
+                defaultValue={data?.evento}
+                className="grow bg-base-100"
+              />
+            </label>
+            <div className="text-error">
+              {errors.evento && dirtyFields.evento && (
+                <p>{errors.evento.message}</p>
+              )}
+            </div>
+            <label className="input input-bordered flex items-center gap-2">
+              Início
+              <input
+                {...register("inicio", {
+                  required: "Início deve ser preenchido",
+                })}
+                defaultValue={ISOToDate(data?.inicio!)}
+                className="grow bg-base-100"
+              />
+            </label>
+            <div className="text-error">
+              {errors.inicio && dirtyFields.inicio && (
+                <p>{errors.inicio.message}</p>
+              )}
+            </div>
+            <label className="input input-bordered flex items-center gap-2">
+              Final
+              <input
+                {...register("final", {
+                  required: "Final deve ser preenchido",
+                })}
+                defaultValue={data?.final && ISOToDate(data?.final!)}
+                className="grow bg-base-100"
+              />
+            </label>
+            <div className="text-error">
+              {errors.final && dirtyFields.final && (
+                <p>{errors.final.message}</p>
+              )}
+            </div>
+            <label className="input input-bordered flex items-center gap-2">
+              Aberto
+              <input
+                type="checkbox"
+                {...register("aberto")}
+                className="checkbox"
+                defaultChecked={data?.aberto}
+              />{" "}
+            </label>
+            <button
+              disabled={isPendingPatch}
+              type="submit"
+              className="btn btn-primary font-semibold text-lg"
+            >
+              {isPendingPatch ? "Editando..." : "Editar"}
+            </button>
           </div>
-          <label className="input input-bordered flex items-center gap-2">
-            Início
-            <InputMask
-              {...register("inicio", {
-                required: "Início deve ser preenchido",
-              })}
-              defaultValue={ISOToDate(data?.inicio!)}
-              className="grow"
-              mask="99/99/9999"
-            />
-          </label>
-          <div className="text-error">
-            {errors.inicio && <p>{errors.inicio.message}</p>}
+          <div className="divider divider-horizontal">|</div>
+          <div className="flex flex-col gap-4 w-full">
+            <div className="flex flex-col gap-4">
+              {selectedPhoto ? (
+                <div className="border border-base-300 rounded shadow-lg p-4">
+                  <img
+                    src={selectedPhoto}
+                    alt="Preview"
+                    className="max-w-[400px] max-h-[200px]"
+                  />
+                </div>
+              ) : (
+                <div>Não há foto salva</div>
+              )}
+              <input
+                type="file"
+                accept="image/*"
+                ref={inputRef}
+                className="hidden"
+                onChange={handlePhotoChange}
+              />
+              <button
+                className="btn btn-primary"
+                onClick={(e: any) => {
+                  e.preventDefault();
+                  inputRef.current?.click();
+                }}
+              >
+                Selecionar arquivo
+              </button>
+            </div>
+            <div>
+              <textarea
+                {...register("texto")}
+                defaultValue={data?.texto}
+                className="textarea textarea-bordered w-full h-32"
+              />
+            </div>
           </div>
-          <label className="input input-bordered flex items-center gap-2">
-            Final
-            <InputMask
-              {...register("final", {
-                required: "Final deve ser preenchido",
-              })}
-              defaultValue={ISOToDate(data?.final!)}
-              className="grow"
-              mask="99/99/9999"
-            />
-          </label>
-          <div className="text-error">
-            {errors.final && <p>{errors.final.message}</p>}
-          </div>
-          <label className="input input-bordered flex items-center gap-2">
-            Aberto
-            <input
-              type="checkbox"
-              {...register("aberto")}
-              className="checkbox"
-              defaultChecked={data?.aberto}
-            />{" "}
-          </label>
-          <button
-            disabled={isPendingPatch}
-            type="submit"
-            className="btn btn-primary font-semibold text-lg"
-          >
-            {isPendingPatch ? "Editando..." : "Editar"}
-          </button>
         </div>
       </form>
     </Modal>

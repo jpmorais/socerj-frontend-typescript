@@ -23,7 +23,7 @@ export interface ICategoriaInscricaoPayload
   extends Omit<ICategoriaInscricao, "id"> {}
 
 class CategoriasInscricao {
-  static getAllCateriasIncricao(params?: IGetAllRequestParams) {
+  static getAllCateriasIncricao(params?: IGetAllRequestParams, enabled = true) {
     const fetchaData = async () => {
       const response = await axios.get<IGetAllApiResponse<ICategoriaInscricao>>(
         `/api/v1/categorias-inscricao?filter=${params?.filter || ""}&sort=${
@@ -45,6 +45,7 @@ class CategoriasInscricao {
         params?.sort,
       ],
       queryFn: fetchaData,
+      enabled: enabled,
     });
   }
 

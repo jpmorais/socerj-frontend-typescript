@@ -10,8 +10,30 @@ import {
   Ticket,
 } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useDashboardContext } from "../pages/layouts/DashboardLayout";
 
 const pages = [
+  {
+    link: "minhas-inscricoes",
+    text: "inscrições",
+    icon_lg: <Ticket size={32} />,
+    icon_sm: <Ticket size={24} />,
+  },
+  {
+    link: "lista-eventos",
+    text: "eventos",
+    icon_lg: <CalendarDays size={32} />,
+    icon_sm: <CalendarDays size={24} />,
+  },
+  {
+    link: "atualiza-usuario",
+    text: "meus dados",
+    icon_lg: <UserCog size={32} />,
+    icon_sm: <UserCog size={24} />,
+  },
+];
+
+const pagesAdmin = [
   {
     link: "areas",
     text: "áreas",
@@ -69,6 +91,7 @@ const pages = [
 ];
 
 const Sidebar = ({ closed }: { closed: boolean }) => {
+  const { usuario } = useDashboardContext();
   return (
     <div className="relative">
       <div
@@ -77,7 +100,7 @@ const Sidebar = ({ closed }: { closed: boolean }) => {
         }`}
       >
         <div className="flex flex-col gap-4 items-end mr-2 mt-8">
-          {pages.map((item) => {
+          {pagesAdmin.map((item) => {
             return (
               <Link
                 key={item.link}
@@ -96,17 +119,32 @@ const Sidebar = ({ closed }: { closed: boolean }) => {
         }`}
       >
         <div className="flex flex-col gap-4 mx-4 absolute top-0 left-0">
-          {pages.map((item) => {
-            return (
-              <Link
-                key={item.link}
-                to={item.link}
-                className="flex flex-row gap-4 font-semibold text-lg items-center"
-              >
-                {item.icon_sm} {item.text}
-              </Link>
-            );
-          })}
+          {usuario &&
+            usuario.isAdmin &&
+            pagesAdmin.map((item) => {
+              return (
+                <Link
+                  key={item.link}
+                  to={item.link}
+                  className="flex flex-row gap-4 font-semibold text-lg items-center"
+                >
+                  {item.icon_sm} {item.text}
+                </Link>
+              );
+            })}
+          {usuario &&
+            !usuario.isAdmin &&
+            pages.map((item) => {
+              return (
+                <Link
+                  key={item.link}
+                  to={item.link}
+                  className="flex flex-row gap-4 font-semibold text-lg items-center"
+                >
+                  {item.icon_sm} {item.text}
+                </Link>
+              );
+            })}
         </div>
       </div>
     </div>

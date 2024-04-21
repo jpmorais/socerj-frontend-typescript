@@ -1,9 +1,8 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { Sun, Moon, Menu, X } from "lucide-react";
-import { useDashboardContext } from "../layouts/DashboardLayout";
-import Usuarios from "../../models/Usuarios";
-import Avatar from "../../components/Avatar";
-import UserMenu from "../../components/UserMenu";
+import { useDashboardContext } from "../pages/layouts/DashboardLayout";
+import UserMenu from "../components/UserMenu";
+import Avatar from "./Avatar";
 
 interface HeaderProps {
   theme: string;
@@ -19,7 +18,6 @@ const Header: React.FC<HeaderProps> = ({
   setClosedSidebar,
 }) => {
   const { usuario } = useDashboardContext();
-  const { isPending, error, data, refetch } = Usuarios.getUsuario(usuario);
 
   const changeTheme = () => {
     if (theme === "dark") {
@@ -51,7 +49,7 @@ const Header: React.FC<HeaderProps> = ({
       <div>
         <div className="flex flex-row gap-6 items-center">
           <UserMenu>
-            <Avatar letter={data?.nome?.charAt(0)} />
+            <Avatar letter={usuario?.nome?.charAt(0)} />
           </UserMenu>
           <label className="swap swap-rotate">
             <input type="checkbox" onClick={changeTheme} />
