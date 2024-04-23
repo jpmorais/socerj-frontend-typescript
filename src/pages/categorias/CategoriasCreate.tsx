@@ -61,7 +61,7 @@ const CategoriasCreate = () => {
                 required: "Categoria deve ser preenchido",
               })}
               placeholder="categoria"
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">

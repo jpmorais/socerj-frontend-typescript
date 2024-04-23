@@ -9,12 +9,15 @@ import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Sort from "../../components/Sort.tsx";
 import Patrocinadores from "../../models/Patrocinadores.ts";
 import Inscricoes from "../../models/Inscricoes.ts";
+import { useAbortIfNotAdmin } from "../../utils/hooks.tsx";
 
 const InscricoesLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [sort, setSort] = useState<string>("");
+
+  useAbortIfNotAdmin();
 
   const { isLoading, setIsLoading } = useDashboardContext();
 

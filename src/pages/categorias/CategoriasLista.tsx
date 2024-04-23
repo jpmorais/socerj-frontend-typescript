@@ -10,12 +10,15 @@ import Especialidades from "../../models/Especialidades.ts";
 import Sort from "../../components/Sort.tsx";
 import Categorias from "../../models/Categorias.ts";
 import CategoriasCreate from "./CategoriasCreate.tsx";
+import { useAbortIfNotAdmin } from "../../utils/hooks.tsx";
 
 const CategoriasLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [sort, setSort] = useState<string>("");
+
+  useAbortIfNotAdmin();
 
   const { isLoading, setIsLoading } = useDashboardContext();
 

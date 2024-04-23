@@ -10,6 +10,7 @@ import Sort from "../../components/Sort.tsx";
 import Eventos from "../../models/Eventos.ts";
 import Cupons, { ICupom } from "../../models/Cupons.ts";
 import Patrocinadores from "../../models/Patrocinadores.ts";
+import { useAbortIfNotAdmin } from "../../utils/hooks.tsx";
 
 const CuponsLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
@@ -18,6 +19,8 @@ const CuponsLista: React.FC = () => {
   const [sort, setSort] = useState<string>("");
   const [patrocinadorId, setPatrocinadorId] = useState("");
   const [eventoId, setEventoid] = useState("");
+
+  useAbortIfNotAdmin();
 
   const { isLoading, setIsLoading } = useDashboardContext();
 

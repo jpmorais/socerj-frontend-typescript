@@ -39,10 +39,6 @@ const EspecialidadesEdit = () => {
     }
   }, [isPendingGet]);
 
-  useEffect(() => {
-    refetch();
-  }, [data]);
-
   // Patch area
   const {
     register,

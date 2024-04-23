@@ -38,10 +38,6 @@ const CategoriasEdit = () => {
     }
   }, [isPendingGet]);
 
-  useEffect(() => {
-    refetch();
-  }, [data]);
-
   // Patch area
   const {
     register,
@@ -61,10 +57,6 @@ const CategoriasEdit = () => {
       );
       navigate("..");
     },
-  });
-
-  useEffect(() => {
-    refetch();
   });
 
   const onSubmit: SubmitHandler<ICategoriaPayload> = async (data) => {
@@ -96,7 +88,7 @@ const CategoriasEdit = () => {
                 required: "Categoria deve ser preenchido",
               })}
               defaultValue={data?.categoria}
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">

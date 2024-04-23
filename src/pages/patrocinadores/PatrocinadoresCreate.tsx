@@ -69,7 +69,7 @@ const PatrocinadoresCreate = () => {
                 required: "Patrocinador deve ser preenchido",
               })}
               placeholder="patrocinador"
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">
@@ -82,7 +82,7 @@ const PatrocinadoresCreate = () => {
                 required: "Contato deve ser preenchido",
               })}
               placeholder="contato"
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">
@@ -95,7 +95,7 @@ const PatrocinadoresCreate = () => {
                 required: "Email deve ser preenchido",
               })}
               placeholder="email"
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">
@@ -106,7 +106,7 @@ const PatrocinadoresCreate = () => {
             <input
               {...register("telefone")}
               placeholder="telefone"
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
 

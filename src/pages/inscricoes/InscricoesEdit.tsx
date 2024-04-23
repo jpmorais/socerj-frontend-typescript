@@ -121,13 +121,12 @@ const InscricoesEdit = () => {
           <div className="flex flex-col gap-3 col-span-4">
             <label className="input input-bordered flex items-center gap-2">
               Data Inscrição
-              <InputMask
+              <input
                 {...register("dataInscricao", {
                   required: "Data de Inscrição deve ser preenchido",
                 })}
                 defaultValue={ISOToDate(inscricao?.dataInscricao!)}
-                className="grow"
-                mask="99/99/9999"
+                className="grow bg-base-100"
               />
             </label>
             <div className="text-error">
@@ -137,14 +136,13 @@ const InscricoesEdit = () => {
           <div className="flex flex-col gap-3 col-span-4">
             <label className="input input-bordered flex items-center gap-2">
               Data Pagamento
-              <InputMask
+              <input
                 {...register("dataPagamento")}
                 defaultValue={
                   inscricao?.dataPagamento &&
                   ISOToDate(inscricao?.dataPagamento)
                 }
-                className="grow"
-                mask="99/99/9999"
+                className="grow bg-base-100"
               />
             </label>
             <div className="text-error"></div>
@@ -157,7 +155,7 @@ const InscricoesEdit = () => {
                   pattern: /^\d{1,3}(,\d{3})*(,\d{2})?$/,
                 })}
                 defaultValue={inscricao?.valor}
-                className="grow"
+                className="grow bg-base-100"
               />
             </label>
             <div className="text-error">
@@ -172,7 +170,7 @@ const InscricoesEdit = () => {
                   pattern: /^\d{1,3}(,\d{3})*(,\d{2})?$/,
                 })}
                 defaultValue={inscricao?.valorPago}
-                className="grow"
+                className="grow bg-base-100"
               />
             </label>
             <div className="text-error">
@@ -185,7 +183,7 @@ const InscricoesEdit = () => {
               <input
                 {...register("notaFiscal")}
                 defaultValue={inscricao?.notaFiscal}
-                className="grow"
+                className="grow bg-base-100"
               />
             </label>
           </div>

@@ -50,12 +50,18 @@ class Areas {
     return useQuery({
       queryKey: ["area", id],
       queryFn: fetchaData,
+      refetchOnMount: true,
     });
   }
 
   static createArea({ onSuccess, onError }: IMutateObject) {
     const postData = async (data: IAreaPayload) => {
-      const response = await axios.post(`/api/v1/areas`, data);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`/api/v1/areas`, data, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
       return response.data;
     };
 
@@ -69,7 +75,11 @@ class Areas {
   static updateArea({ onSuccess, onError }: IMutateObject) {
     const patchData = async (data: IArea) => {
       const { id, ...payload } = data;
-      const response = await axios.patch(`/api/v1/areas/${data.id}`, payload);
+      const token = localStorage.getItem("token");
+
+      const response = await axios.patch(`/api/v1/areas/${data.id}`, payload, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 
@@ -82,7 +92,12 @@ class Areas {
 
   static deleteArea({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/areas/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`/api/v1/areas/${id}`, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
       return response.data;
     };
 

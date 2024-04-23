@@ -55,7 +55,12 @@ class Categorias {
 
   static createCategoria({ onSuccess, onError }: IMutateObject) {
     const postData = async (data: ICategoriaPayload) => {
-      const response = await axios.post(`/api/v1/categorias`, data);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`/api/v1/categorias`, data, {
+        headers: {
+          Authorization: `bearer ${token}`,
+        },
+      });
       return response.data;
     };
 
@@ -69,9 +74,11 @@ class Categorias {
   static updateCategoria({ onSuccess, onError }: IMutateObject) {
     const patchData = async (data: ICategoria) => {
       const { id, ...payload } = data;
+      const token = localStorage.getItem("token");
       const response = await axios.patch(
         `/api/v1/categorias/${data.id}`,
-        payload
+        payload,
+        { headers: { Authorization: `bearer ${token}` } }
       );
       return response.data;
     };
@@ -85,7 +92,10 @@ class Categorias {
 
   static deleteCatgoria({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/categorias/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`/api/v1/categorias/${id}`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 

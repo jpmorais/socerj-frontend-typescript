@@ -10,6 +10,7 @@ import Sort from "../../components/Sort.tsx";
 import Generos from "../../models/Generos.ts";
 import Usuarios from "../../models/Usuarios.ts";
 import SelectWithState from "../../components/SelectWithState.tsx";
+import { useAbortIfNotAdmin } from "../../utils/hooks.tsx";
 
 const lista = [
   {
@@ -32,6 +33,8 @@ const UsuariosLista: React.FC = () => {
   const [limit, setLimit] = useState<number>(10);
   const [sort, setSort] = useState<string>("");
   const [prefixo, setPrefixo] = useState<string>("nome");
+
+  useAbortIfNotAdmin();
 
   const { isLoading, setIsLoading } = useDashboardContext();
 

@@ -42,10 +42,6 @@ const PatrocinadoresEdit = () => {
 
   useEffect(() => {
     refetch();
-  }, [data]);
-
-  useEffect(() => {
-    refetch();
   });
 
   // edit patrocinaodr
@@ -100,7 +96,7 @@ const PatrocinadoresEdit = () => {
                 required: "Patrocinador deve ser preenchido",
               })}
               defaultValue={data?.patrocinador}
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">
@@ -113,7 +109,7 @@ const PatrocinadoresEdit = () => {
                 required: "Contato deve ser preenchido",
               })}
               defaultValue={data?.contato}
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">
@@ -126,7 +122,7 @@ const PatrocinadoresEdit = () => {
                 required: "Email deve ser preenchido",
               })}
               defaultValue={data?.email}
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
           <div className="text-error">
@@ -137,7 +133,7 @@ const PatrocinadoresEdit = () => {
             <input
               {...register("telefone")}
               defaultValue={data?.telefone}
-              className="grow"
+              className="grow bg-base-100"
             />
           </label>
 

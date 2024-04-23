@@ -9,12 +9,15 @@ import { FilePenLine, Trash2 } from "lucide-react";
 import { Outlet, useNavigate } from "react-router-dom";
 import SelectPageLimit from "../../components/SelectPageLimit.tsx";
 import Sort from "../../components/Sort.tsx";
+import { useAbortIfNotAdmin } from "../../utils/hooks.tsx";
 
 const AreasLista: React.FC = () => {
   const [search, setSearch] = useState<string>("");
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(10);
   const [sort, setSort] = useState<string>("");
+
+  useAbortIfNotAdmin();
 
   const { isLoading, setIsLoading } = useDashboardContext();
 

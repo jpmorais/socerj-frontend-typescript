@@ -6,8 +6,6 @@ import { formatarParaDinheiro } from "../../utils/funcoes";
 import Doctors from "../../assets/doctors.svg";
 import Inscricoes, { IInscricaoPayload } from "../../models/Inscricoes";
 import toast from "react-hot-toast";
-import { tipoInscricao } from "../../utils/data";
-import { TipoInscricao } from "../../types/types";
 
 const InscreverEventoPage = () => {
   const { usuario } = useDashboardContext();

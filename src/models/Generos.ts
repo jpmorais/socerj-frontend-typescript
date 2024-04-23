@@ -49,7 +49,10 @@ class Generos {
 
   static createGenero({ onSuccess, onError }: IMutateObject) {
     const postData = async (data: IGeneroPayload) => {
-      const response = await axios.post(`/api/v1/generos`, data);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`/api/v1/generos`, data, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 
@@ -63,7 +66,12 @@ class Generos {
   static updateGenero({ onSuccess, onError }: IMutateObject) {
     const patchData = async (data: IGenero) => {
       const { id, ...payload } = data;
-      const response = await axios.patch(`/api/v1/generos/${data.id}`, payload);
+      const token = localStorage.getItem("token");
+      const response = await axios.patch(
+        `/api/v1/generos/${data.id}`,
+        payload,
+        { headers: { Authorization: `bearer ${token}` } }
+      );
       return response.data;
     };
 
@@ -76,7 +84,10 @@ class Generos {
 
   static deleteGenero({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/generos/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`/api/v1/generos/${id}`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 

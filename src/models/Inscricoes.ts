@@ -36,12 +36,43 @@ export interface IInscricao {
 export interface IInscricaoPayload extends Omit<IInscricao, "id"> {}
 
 class Inscricoes {
+  static getInscricoesByUser(id: string, enabled: boolean = false) {
+    const fetchaData = async () => {
+      const token = localStorage.getItem("token");
+
+      const response = await axios.get<IGetAllApiResponse<IInscricao>>(
+        `/api/v1/inscricoes/usuario/${id}`,
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        }
+      );
+      return {
+        items: response.data.items,
+      };
+    };
+
+    return useQuery({
+      queryKey: ["inscricoes-by-user", id],
+      queryFn: fetchaData,
+      enabled: enabled,
+    });
+  }
+
   static getAllInscricoes(params?: IGetAllRequestParams) {
     const fetchaData = async () => {
+      const token = localStorage.getItem("token");
+
       const response = await axios.get<IGetAllApiResponse<IInscricao>>(
         `/api/v1/inscricoes?filter=${params?.filter || ""}&sort=${
           params?.sort || ""
-        }&limit=${params?.limit || 20}&page=${params?.page || 1}`
+        }&limit=${params?.limit || 20}&page=${params?.page || 1}`,
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        }
       );
       return {
         items: response.data.items,

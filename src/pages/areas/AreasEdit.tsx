@@ -34,7 +34,7 @@ const AreasEdit = () => {
 
   useEffect(() => {
     refetch();
-  }, [data]);
+  });
 
   // Patch area
   const {
@@ -53,10 +53,6 @@ const AreasEdit = () => {
       toast.error(`falha ao editar área: ${error?.response?.data?.message}`);
       navigate("..");
     },
-  });
-
-  useEffect(() => {
-    refetch();
   });
 
   const onSubmit: SubmitHandler<IAreaPayload> = async (data) => {

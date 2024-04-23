@@ -42,6 +42,7 @@ import HomePage from "./pages/institucional/home";
 import ListaEventosPage from "./pages/painel-usuario/listaEventos";
 import InscreverEventoPage from "./pages/painel-usuario/inscreverEvento";
 import RegistradoPage from "./pages/auth/registrado";
+import ListaInscricoesPage from "./pages/painel-usuario/minhasIncricoes";
 
 const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
       {
         path: "inscrever/:id",
         element: <InscreverEventoPage />,
+      },
+      {
+        path: "minhas-inscricoes",
+        element: <ListaInscricoesPage />,
       },
       {
         path: "areas",

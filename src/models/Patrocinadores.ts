@@ -21,10 +21,12 @@ export interface IPatrocinadorPayload extends Omit<IPatrocinador, "id"> {}
 class Patrocinadores {
   static getAllPatrocinadores(params?: IGetAllRequestParams) {
     const fetchaData = async () => {
+      const token = localStorage.getItem("token");
       const response = await axios.get<IGetAllApiResponse<IPatrocinador>>(
         `/api/v1/patrocinadores?filter=${params?.filter || ""}&sort=${
           params?.sort || ""
-        }&limit=${params?.limit || 20}&page=${params?.page || 1}`
+        }&limit=${params?.limit || 20}&page=${params?.page || 1}`,
+        { headers: { Authorization: `bearer ${token}` } }
       );
       return {
         items: response.data.items,
@@ -40,8 +42,10 @@ class Patrocinadores {
 
   static getPatrocinador(id: string) {
     const fetchaData = async () => {
+      const token = localStorage.getItem("token");
       const response = await axios.get<IPatrocinador>(
-        `/api/v1/patrocinadores/${id}`
+        `/api/v1/patrocinadores/${id}`,
+        { headers: { Authorization: `bearer ${token}` } }
       );
       return response.data;
     };
@@ -54,7 +58,10 @@ class Patrocinadores {
 
   static createPatrocinador({ onSuccess, onError }: IMutateObject) {
     const postData = async (data: IPatrocinadorPayload) => {
-      const response = await axios.post(`/api/v1/patrocinadores`, data);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`/api/v1/patrocinadores`, data, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 
@@ -68,9 +75,11 @@ class Patrocinadores {
   static updatePatrocinador({ onSuccess, onError }: IMutateObject) {
     const patchData = async (data: IPatrocinador) => {
       const { id, ...payload } = data;
+      const token = localStorage.getItem("token");
       const response = await axios.patch(
         `/api/v1/patrocinadores/${data.id}`,
-        payload
+        payload,
+        { headers: { Authorization: `bearer ${token}` } }
       );
       return response.data;
     };
@@ -84,7 +93,10 @@ class Patrocinadores {
 
   static deletePatrocinador({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/patrocinadores/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`/api/v1/patrocinadores/${id}`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 

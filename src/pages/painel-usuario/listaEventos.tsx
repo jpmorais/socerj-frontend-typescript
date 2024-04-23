@@ -2,8 +2,13 @@ import CardEvento from "../../components/CardEvento";
 import Eventos from "../../models/Eventos";
 import SocerjLogo from "../../assets/socerj-logo.png";
 import Doctors from "../../assets/doctors.svg";
+import { useDashboardContext } from "../layouts/DashboardLayout";
+import Inscricoes from "../../models/Inscricoes";
 
 const ListaEventosPage = () => {
+  const { usuario } = useDashboardContext();
+
+  // Pega eventos
   const {
     isPending,
     error,
@@ -12,6 +17,12 @@ const ListaEventosPage = () => {
   } = Eventos.getAllEventos({
     sort: "final:desc",
   });
+
+  // Pega eventos que o usuário está inscrito
+  const { data: inscricoes } = Inscricoes.getInscricoesByUser(
+    usuario?.id!,
+    usuario?.id ? true : false
+  );
 
   return (
     <div>
@@ -26,6 +37,7 @@ const ListaEventosPage = () => {
           return (
             <CardEvento
               key={item.id}
+              inscritos={inscricoes?.items}
               evento={{
                 id: item.id,
                 nome: item.evento,

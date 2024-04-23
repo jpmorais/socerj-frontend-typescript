@@ -57,7 +57,10 @@ class Especialidades {
 
   static createEspecialidade({ onSuccess, onError }: IMutateObject) {
     const postData = async (data: IEspecialidadePayload) => {
-      const response = await axios.post(`/api/v1/especialidades`, data);
+      const token = localStorage.getItem("token");
+      const response = await axios.post(`/api/v1/especialidades`, data, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 
@@ -71,9 +74,11 @@ class Especialidades {
   static updateEspecialidade({ onSuccess, onError }: IMutateObject) {
     const patchData = async (data: IEspecialidade) => {
       const { id, ...payload } = data;
+      const token = localStorage.getItem("token");
       const response = await axios.patch(
         `/api/v1/especialidades/${data.id}`,
-        payload
+        payload,
+        { headers: { Authorization: `bearer ${token}` } }
       );
       return response.data;
     };
@@ -87,7 +92,10 @@ class Especialidades {
 
   static deleteEspecialidade({ onSuccess, onError }: IMutateObject) {
     const deleteData = async (id: string) => {
-      const response = await axios.delete(`/api/v1/especialidades/${id}`);
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(`/api/v1/especialidades/${id}`, {
+        headers: { Authorization: `bearer ${token}` },
+      });
       return response.data;
     };
 
